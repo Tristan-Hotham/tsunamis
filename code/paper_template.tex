@@ -1,0 +1,139 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\newfontfamily\headfont{Inter}[UprightFont=*-ExtraBold,BoldFont=*-ExtraBold,Extension=.otf,Path=/usr/share/fonts/opentype/inter/]
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{graphicx,booktabs,float,caption,array,xcolor,longtable}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage[round]{natbib}
+\usepackage{setspace}
+\setstretch{1.05}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\titleformat{\section}{\headfont\Large}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\headfont\large}{\thesubsection}{0.8em}{}
+\captionsetup{font=small,labelfont=bf}
+\urlstyle{same}
+\hypersetup{pdftitle={Every Tsunami on Record},pdfauthor={Tristan Hotham}}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries Every Tsunami on Record\par}
+\vspace{0.4em}
+{\large Sources, runups and deaths in NOAA's Global Historical Tsunami Database,\\{{source.first_name|raw}} to {{source.last_year|raw}}\par}
+\vspace{1.2em}
+{\large Tristan Hotham\par}
+\vspace{0.3em}
+{\small Independent researcher\\
+ORCID: 0000-0003-4931-9349\\
+DOI: \href{https://doi.org/{{meta.doi}}}{https://doi.org/{{meta.doi}}}\par}
+\vspace{0.8em}
+2026
+\end{center}
+
+\begin{quote}
+\small
+\begin{center}\textbf{Abstract}\end{center}
+I map and describe every tsunami that NOAA's National Centers for Environmental Information (NCEI) rate as definite or probable in the Global Historical Tsunami Database: {{source.n|int}} source events from {{source.first_name|raw}} to {{source.last_year|raw}}, with {{source.runups_kept|int}} records of the places their water reached. {{causes.Earthquake.pct|int}}\% were started by an earthquake alone and {{eq_any_pct|int}}\% involved an earthquake; {{plates.within100_pct|int}}\% of earthquake sources lie within 100 km of a plate boundary. {{oceans.Pacific.pct|int}}\% began in NCEI's Pacific regions and {{ring.pct|int}}\% on the Pacific rim, the Ring of Fire. NCEI records {{deaths.total|int}} tsunami deaths for {{deaths.n_events|int}} events; the Indian Ocean tsunami of 2004 accounts for {{deaths.y2004_pct|int}}\% and the ten deadliest for {{deaths.top10_pct|int}}\%, while the Indian Ocean as a whole has {{oceans.Indian Ocean.pct|f1}}\% of tsunamis but {{oceans.Indian Ocean.deaths_pct|int}}\% of deaths. The highest runups come not from great ocean tsunamis but from landslides into narrow bays, led by {{famous.lituya.max_run|f1}} m at Lituya Bay, Alaska, in 1958: all {{heights.ge100_events|int}} tsunamis with a runup of 100 m or more involved a landslide or a volcano. Ocean-crossing waves arrive on a timetable, at a median {{speed.median_kmh|int}} km an hour beyond 1,000 km, close to the shallow water speed over a deep ocean; the farthest measurement is {{farthest.0.dist|int}} km from Sumatra in 2004. The number of tsunamis recorded per century rises from {{cent.c1600|int}} in the 1600s to {{cent.c1900|int}} in the 1900s, a measure of recording, not of hazard.
+
+\textbf{Keywords:} tsunamis; natural hazards; earthquakes; landslides; volcanoes; runup; disaster mortality; NOAA NCEI; open data; mapping
+\end{quote}
+
+\section{Introduction}
+A tsunami is a train of long waves set off when a large volume of water is displaced at once, most often by the sudden movement of the sea floor in an earthquake, but also by landslides, volcanic eruptions and collapses, explosions and fast moving atmospheric disturbances. Near the source a tsunami can run tens or even hundreds of metres up the shore; far away it may register as a few centimetres on a tide gauge. NCEI and the World Data Service maintain the Global Historical Tsunami Database \citep{ncei}, which brings together historical accounts, geological evidence, tide gauge and deep-ocean records and post-tsunami surveys for every event they can document. This paper takes the whole database as it stood in {{source.fetched|raw}} and asks simple questions of it: where tsunamis start and why, where their water was recorded, how high it ran, how far and how fast it travelled, and how many people died. An interactive map accompanies the paper at \url{{{meta.page}}}.
+
+\section{Data and methods}
+\subsection{Source events}
+The database was fetched from the NCEI Hazard Service API (\url{{{meta.api}}}), endpoints \texttt{tsunamis/events} and \texttt{tsunamis/runups}. It holds {{source.events|int}} source events. NCEI rates each event's validity as 4 (definite tsunami), 3 (probable), 2 (questionable), 1 (very doubtful), 0 (an event that only caused a seiche or a disturbance in an inland river or lake) or $-1$ (an erroneous entry). I count only events rated 3 or 4: {{source.n|int}} tsunamis ({{source.definite|int}} definite and {{source.probable|int}} probable), leaving out {{source.other|int}} entries. Of the {{source.n|int}}, {{source.located|int}} have a position.
+
+NCEI's cause codes are: 0 unknown, 1 earthquake, 2 questionable earthquake, 3 earthquake and landslide, 4 volcano and earthquake, 5 volcano, earthquake and landslide, 6 volcano, 7 volcano and landslide, 8 landslide, 9 meteorological, 10 explosion and 11 astronomical tide. I checked these against the data before use: the Halifax munitions explosion of 1917 carries code 10; the Vajont dam landslide of 1963, the Lituya Bay rockslide of 1936 and the Dickson Fjord rockslide of 2023 code 8; Krakatau in 1883 and Hunga Tonga in 2022 code 6; codes 4 to 7 almost always carry a linked volcano record and codes 1, 3 and 8 almost never; and code 9 events have no earthquake magnitude and include a run of meteotsunamis in south-western Australia. I group the codes into earthquake (1 and 2), earthquake and landslide (3), volcano (4 to 7), landslide (8), meteorological (9), explosion (10) and unknown (0 and 11). Table~\ref{tab:causes} gives the counts by code.
+
+{{TABLE_CAUSES}}
+
+Each event carries an NCEI region code. I group these into oceans (Pacific, regions 80 to 89; Indian Ocean, 60; Atlantic and Caribbean, 70 to 77; Mediterranean, 50; Black Sea and Caspian, 40; Red Sea and Persian Gulf, 30; inland Africa, 78), and treat regions 81 to 89, the rim of the Pacific without Hawaii, as the Ring of Fire. One event has no region. For earthquake sources I measured the great-circle distance to the nearest boundary in Bird's PB2002 plate model \citep{bird}.
+
+\subsection{Deaths}
+NCEI gives two death figures: the deaths caused by the tsunami, and the total for the whole event including the earthquake, eruption or landslide that caused it. The two can differ enormously. I use only the first. For many events, especially old ones, NCEI gives no figure or only an order of magnitude ({{deaths.only_order|int}} tsunamis), so totals are a floor.
+
+\subsection{Runups and travel}
+The {{source.runups|int}} runup records are places where the water was recorded: survey marks, tide gauges, eyewitness accounts and deep-ocean pressure gauges. I keep the {{source.runups_kept|int}} that belong to a definite or probable tsunami and are not flagged doubtful ({{source.runups_doubtful|int}} are). NCEI's doubtful field also uses two other flags, which I checked against the data: one marks places where the water moved with the atmospheric pressure wave of a great eruption ({{atm.n|int}} records, all for Hunga Tonga and Krakatau) and one marks meteorological sources. I keep both, but leave the air wave places out of the distance and speed results. The {{source.runups_deep|int}} deep-ocean gauge records are left out of the map, the country counts and the distance results. Height is NCEI's maximum water height at the place, distance its great-circle distance from the source, and travel time its hours and minutes from the event to the first arrival. Death figures attached to runup places are not summed, because a town and its prefecture can both appear.
+
+\section{Results}
+\subsection{How many, and what starts them}
+Figure~\ref{fig:map} maps every source and every place. {{causes.Earthquake.n|int}} tsunamis ({{causes.Earthquake.pct|f1}}\%) were started by an earthquake alone, {{causes.Earthquake and landslide.n|int}} ({{causes.Earthquake and landslide.pct|f1}}\%) by an earthquake with a landslide, {{causes.Landslide.n|int}} ({{causes.Landslide.pct|f1}}\%) by a landslide, {{causes.Volcano.n|int}} ({{causes.Volcano.pct|f1}}\%) by volcanic activity, {{causes.Meteorological.n|int}} ({{causes.Meteorological.pct|f1}}\%) by meteorological disturbances and {{causes.Explosion.n|int}} by explosions; {{causes.Unknown.n|int}} have no known cause (Figure~\ref{fig:causes}). Among the {{mag.n|int}} earthquake sources with a magnitude, the median is {{mag.median|f1}}, {{mag.ge7_pct|int}}\% are 7 or more and {{mag.ge9|int}} are 9 or more. {{plates.within100_pct|f1}}\% of earthquake sources with a position lie within 100 km of a PB2002 plate boundary and {{plates.within250_pct|f1}}\% within 250 km (median {{plates.median_km|int}} km). Volcanoes cause {{causes.Volcano.pct|f1}}\% of tsunamis but {{causes.Volcano.deaths_pct|f1}}\% of recorded deaths.
+
+\begin{figure}[tbp]\centering\includegraphics[width=\textwidth]{f_map.png}
+\caption{Every definite or probable tsunami source with a position, sized by tsunami deaths and coloured by cause, with the places where the water was recorded coloured by height. Pacific-centred Equal Earth projection; dashed lines: PB2002 plate boundaries.}\label{fig:map}\end{figure}
+
+\begin{figure}[tbp]\centering\includegraphics[width=.92\textwidth]{f_causes.png}
+\caption{Share of tsunamis and of recorded tsunami deaths by cause group and by ocean.}\label{fig:causes}\end{figure}
+
+\subsection{Where}
+{{oceans.Pacific.n|int}} tsunamis ({{oceans.Pacific.pct|f1}}\%) began in NCEI's Pacific regions and {{ring.n|int}} ({{ring.pct|f1}}\%) on the Pacific rim; adding the {{ring.sunda|int}} tsunamis off Sumatra and Java, on the Sunda arc that NCEI places in the Indian Ocean, would raise the share to {{ring.with_sunda_pct|f1}}\%. Japan alone has {{ring.japan|int}} ({{ring.japan_pct|f1}}\%). The Mediterranean has {{oceans.Mediterranean.n|int}} ({{oceans.Mediterranean.pct|f1}}\%), the Atlantic and Caribbean {{oceans.Atlantic and Caribbean.n|int}} ({{oceans.Atlantic and Caribbean.pct|f1}}\%) and the Indian Ocean {{oceans.Indian Ocean.n|int}} ({{oceans.Indian Ocean.pct|f1}}\%). Deaths are distributed very differently: the Indian Ocean has {{oceans.Indian Ocean.deaths_pct|f1}}\% of recorded tsunami deaths, the Pacific {{oceans.Pacific.deaths_pct|f1}}\% and the Atlantic and Caribbean, mostly Lisbon in 1755, {{oceans.Atlantic and Caribbean.deaths_pct|f1}}\%.
+
+Counting places where water was recorded, {{n_countries|int}} countries and territories have been reached by at least one tsunami. Japan has been reached by {{countries.0.events|int}} different tsunamis, the United States by {{countries.1.events|int}} and Indonesia by {{countries.2.events|int}} (Figure~\ref{fig:countries}). Japan also has {{japan.japan_runups_pct|f1}}\% of all place records, {{japan.tohoku_runups|int}} of them from the surveys after the Tohoku tsunami of 2011.
+
+\subsection{Deaths}
+NCEI records tsunami deaths for {{deaths.n_events|int}} tsunamis ({{deaths.n_events_pct|f1}}\%), totalling {{deaths.total|int}} (Table~\ref{tab:deaths}, Figure~\ref{fig:deadliest}). The Indian Ocean tsunami of 26 December 2004 accounts for {{deadliest.0.deaths|int}} ({{deaths.y2004_pct|f1}}\%), and the ten deadliest for {{deaths.top10_pct|f1}}\%. {{deaths.over1000|int}} tsunamis killed 1,000 people or more and {{deaths.over10000|int}} killed 10,000 or more. {{deaths.since1900_pct|f1}}\% of recorded deaths are from 1900 or later and {{deaths.since2000_pct|f1}}\% from 2000 or later, a reflection both of the 2004 disaster and of better counting. The whole-event figure tells a different story: its largest entry is the Haiti earthquake of 2010 ({{haiti.deaths_total|int}} deaths, of which NCEI attributes {{haiti.deaths|int}} to the tsunami), followed by 2004 and the Great Kanto earthquake of 1923 ({{kanto.deaths_total|int}}, tsunami {{kanto.deaths|int}}).
+
+{{TABLE_DEATHS}}
+
+\begin{figure}[tbp]\centering\includegraphics[width=.92\textwidth]{f_deadliest.png}
+\caption{The twelve deadliest tsunamis by deaths caused by the tsunami, as NCEI records them.}\label{fig:deadliest}\end{figure}
+
+\subsection{Heights}
+NCEI gives a water height for {{heights.n_ht|int}} places; the median is {{heights.median|f2}} m and {{heights.under1_pct|f1}}\% are under a metre. {{heights.ge10_events|int}} tsunamis reached 10 m somewhere, {{heights.ge30_events|int}} reached 30 m and {{heights.ge100_events|int}} reached 100 m (Table~\ref{tab:highest}, Figure~\ref{fig:highest}). Every one of the last group involved a landslide or a volcano: the 1958 Lituya Bay rockslide ({{famous.lituya.max_run|f1}} m), Tracy Arm in 2025 ({{highest.1.ht|int}} m), Spirit Lake at Mount St Helens in 1980 ({{highest.2.ht|int}} m), Vajont in 1963 ({{highest.3.ht|int}} m) and Dickson Fjord in 2023 ({{highest.4.ht|int}} m) among them. The highest runup from an earthquake alone is {{heights.eq_max.ht|int}} m, at {{heights.eq_max.place|raw}} in {{heights.eq_max.yname|raw}}; Tohoku reached {{famous.tohoku.max_run|f1}} m and the 2004 tsunami {{famous.sumatra.max_run|f1}} m.
+
+{{TABLE_HIGHEST}}
+
+\begin{figure}[tbp]\centering\includegraphics[width=.92\textwidth]{f_highest.png}
+\caption{The highest runup recorded for each tsunami: the top twelve, coloured by cause.}\label{fig:highest}\end{figure}
+
+\subsection{Distance and speed}
+{{dist.over1000_events|int}} of the {{dist.events_with|int}} tsunamis with a measured height and distance ({{dist.over1000_pct|f1}}\%) were recorded more than 1,000 km from the source, and {{dist.over10000_events|int}} more than 10,000 km (Table~\ref{tab:far}). The farthest is {{farthest.0.ht|f2}} m at {{farthest.0.place|raw}} in the Galápagos, {{farthest.0.dist|int}} km from the 2004 source, {{farthest.0.trav_h|int}} hours {{farthest.0.trav_m|int}} minutes after the earthquake. Most of the rest of the list are Chilean earthquakes recorded in East Asia. Figure~\ref{fig:lines} shows the reach of the 1960 and 2004 tsunamis.
+
+For the {{speed.n|int}} places more than 1,000 km away with a travel time, the implied speed has a median of {{speed.median_kmh|int}} km an hour (interquartile range {{speed.q25|int}} to {{speed.q75|int}}), close to the shallow water wave speed $\sqrt{gh}$ of about {{speed.theory_4km_kmh|int}} km an hour over 4 km of water (Figure~\ref{fig:travel}). Examples: the 1946 Aleutian tsunami reached Hilo, {{travel.aleut_hilo.dist|int}} km away, in {{travel.aleut_hilo.first_h|f1}} hours; the 1960 Chilean tsunami reached Hilo in {{travel.chile_hilo.first_h|f1}} hours and Japan in {{travel.chile_japan.first_h|f1}}; the 2004 tsunami reached Kenya in {{travel.sum_kenya.first_h|f1}} hours, Tanzania in {{travel.sum_tanzania.first_h|f1}} and South Africa in {{travel.sum_safrica.first_h|f1}}.
+
+The eruptions of Krakatau and Hunga Tonga moved the sea a second way, through their atmospheric pressure waves. NCEI flags {{atm.tonga|int}} such places for Hunga Tonga, in {{atm.tonga_countries|int}} countries as far as {{atm.tonga_far_place|raw}}, {{atm.tonga_far_country|raw}} ({{atm.tonga_far_km|int}} km), and {{atm.krakatau|int}} for Krakatau, as far as {{atm.krakatau_far_place|raw}}, {{atm.krakatau_far_country|raw}}. Counting all places, Hunga Tonga reached {{famous.tonga.countries|int}} countries, more than any other event; the 2004 tsunami reached {{famous.sumatra.countries|int}}.
+
+{{TABLE_FAR}}
+
+\begin{figure}[tbp]\centering\includegraphics[width=.9\textwidth]{f_lines.png}
+\caption{Places where the water of the 1960 Chilean and 2004 Indian Ocean tsunamis was recorded, joined to the source by straight lines and coloured by height.}\label{fig:lines}\end{figure}
+
+\begin{figure}[tbp]\centering\includegraphics[width=.92\textwidth]{f_travel.png}
+\caption{Distance from the source against recorded travel time for every place with both, coloured by water height. Dashed lines: steady speeds of 400 and 700 km an hour.}\label{fig:travel}\end{figure}
+
+\subsection{Through time}
+The record is very uneven in time (Figure~\ref{fig:century}). There are {{cent.before0|int}} tsunamis before AD 1 and {{cent.before1500|int}} before 1500; then {{cent.c1500|int}} in the 1500s, {{cent.c1600|int}} in the 1600s, {{cent.c1700|int}} in the 1700s, {{cent.c1800|int}} in the 1800s and {{cent.c1900|int}} in the 1900s. {{cent.since1900_pct|f1}}\% of the record dates from 1900 or later. This growth is a recording effect: written records spreading around the world's coasts, then tide gauges, seismographs, deep-ocean pressure sensors and systematic surveys, each able to detect smaller waves than before. Meteotsunamis show it most clearly, with {{modern.met_before1950|int}} recorded before 1950 and {{modern.met_since2000|int}} since 2000. Even in the instrumental period the decade counts rise, from {{decades.0.n|int}} in 1900 to 1909 to {{decades.11.n|int}} in 2010 to 2019. Since 1950 the database averages {{modern.per_year|f1}} tsunamis a year, {{modern.deadly_per_year|f1}} of them deadly. None of this is evidence of a trend in tsunami occurrence.
+
+\begin{figure}[tbp]\centering\includegraphics[width=.92\textwidth]{f_century.png}
+\caption{Definite and probable tsunamis recorded per century from AD 1000, by cause. The 2000s are partial.}\label{fig:century}\end{figure}
+
+\begin{figure}[tbp]\centering\includegraphics[width=.86\textwidth]{f_countries.png}
+\caption{The countries and territories reached by the most tsunamis (number of different tsunamis recorded at one or more places).}\label{fig:countries}\end{figure}
+
+\section{Limitations}
+First, the database is a compilation of very different kinds of evidence, and its completeness falls steeply with age; counts over time measure recording effort. Second, validity ratings, causes, dates and positions for old events are NCEI's judgements, which I follow. Third, death tolls for historical events are estimates, sometimes disputed, and many events have none. Fourth, runup records vary from single eyewitness accounts to thousands of survey points for one event, so place counts weight well surveyed events and countries heavily. Fifth, region-based oceans and the Ring of Fire definition are conventions; a different grouping of the Sunda arc changes the Pacific share by a few points. Sixth, {{source.last_year|raw}} is incomplete.
+
+\section{Conclusion}
+Most tsunamis are started by large subduction earthquakes around the Pacific, and at half of the places where their water was recorded it rose {{heights.median|f1}} m or less. The deaths are concentrated in a handful of catastrophes, above all the Indian Ocean tsunami of 2004, which killed more people than every other tsunami of the past century combined in the database. The highest water comes from landslides into confined bays, and the farthest reach from great earthquakes whose waves cross whole oceans at the speed of an airliner, on a timetable that makes warning possible. The growing count of tsunamis is a story about the people and instruments watching the sea.
+
+\section*{Data and code availability}
+The interactive map is at \url{{{meta.page}}}. Data and code are at \url{{{meta.repo}}} and archived with this paper at \url{https://doi.org/{{meta.doi}}}. Derived data and text are released under CC BY 4.0 and code under the MIT licence. The NCEI database is a US government work in the public domain; please cite it as below.
+
+\section*{AI statement}
+I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.
+
+\begin{thebibliography}{9}
+\bibitem[NCEI(2026)]{ncei} National Geophysical Data Center / World Data Service (NGDC/WDS) (2026) NCEI/WDS Global Historical Tsunami Database. NOAA National Centers for Environmental Information. doi:10.7289/V5PN93H7. Fetched {{source.fetched|raw}} from \url{{{meta.api}}}.
+\bibitem[Bird(2003)]{bird} Bird, P. (2003) An updated digital model of plate boundaries. \textit{Geochemistry, Geophysics, Geosystems} 4(3), 1027. doi:10.1029/2001GC000252. GeoJSON by H. Ahlenius, \url{https://github.com/fraxen/tectonicplates}, ODC Attribution License.
+\bibitem[Natural Earth(2026)]{naturalearth} Natural Earth (2026) Admin 0 countries and populated places, 1:50m and 1:10m. Public domain. \url{https://www.naturalearthdata.com/}
+\end{thebibliography}
+\end{document}

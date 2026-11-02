@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Every Tsunami on Record</title>
+<meta name="description" content="An interactive map of the {{source.n|int}} definite and probable tsunamis in NOAA's Global Historical Tsunami Database, from {{source.first_name|raw}} to {{source.last_year|raw}}: what started them, the {{source.runups_coast|int}} places the water reached, how high it ran, how far it travelled and how many people died.">
+<meta property="og:title" content="Every tsunami on record: where they start, where the water went, and who died">
+<meta property="og:description" content="{{source.n|int}} tsunamis since {{source.first_name|raw}}. {{causes.Earthquake.pct|int}}% started with an earthquake, {{ring.pct|int}}% around the rim of the Pacific. The highest ran {{famous.lituya.max_run|int}} m up a mountainside in Alaska.">
+<meta property="og:image" content="https://maps.tristanhotham.com/tsunamis/header.png">
+<meta property="og:url" content="https://maps.tristanhotham.com/tsunamis/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<style>
+/* Tide line: pale paper, deep sea blue, a warning orange for the quakes that start most waves. */
+:root{
+  --bg:#F6F4EF; --panel:#EAE7DF; --fg:#1D2128; --muted:#636A72; --rule:#DDD8CC; --card:#FFFEFA; --border:#CBC5B8;
+  --hot:#C8322B; --sea2:#173F80; --quake:#D9822B; --ink:#173F80; --land:#E4E0D6; --sea:#E8EEF1; --coast:#BDB6A8; --plate:#B0504A;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11151B; --panel:#1B2029; --fg:#ECEEF1; --muted:#A2A8B0; --rule:#30353F; --card:#161A21; --border:#444B57;
+  --hot:#FF6A5C; --sea2:#8FB8F0; --quake:#F2A35A; --ink:#9EC1F2; --land:#262B33; --sea:#141B24; --coast:#4A515C; --plate:#E07A70; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151B; --panel:#1B2029; --fg:#ECEEF1; --muted:#A2A8B0; --rule:#30353F; --card:#161A21; --border:#444B57;
+  --hot:#FF6A5C; --sea2:#8FB8F0; --quake:#F2A35A; --ink:#9EC1F2; --land:#262B33; --sea:#141B24; --coast:#4A515C; --plate:#E07A70; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 18px/1.62 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-x:hidden}
+.wrap{max-width:700px;margin:0 auto;padding-block:28px 64px}
+.wrap .bleed{width:min(1180px,calc(100vw - 32px));margin-left:calc((100% - min(1180px,100vw - 32px))/2);margin-right:0}
+a{color:inherit;text-decoration-color:var(--sea2);text-underline-offset:3px}
+.kicker{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kicker b{background:var(--ink);color:#fff;padding:5px 8px;font-weight:500}
+:root[data-theme="dark"] .kicker b{color:#11151B}
+header.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:end;border-bottom:6px double var(--fg);padding-bottom:22px;margin-top:18px}
+h1{font:900 clamp(44px,11vw,92px)/.9 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance}
+h1 .a{color:var(--sea2)}
+.mark{width:clamp(78px,16vw,128px);height:auto;display:block;color:var(--fg)}
+.dek{grid-column:1/-1;font-size:21px;line-height:1.42;margin:8px 0 0;max-width:56ch}
+.byline{font:400 13px/1.4 var(--mono);color:var(--muted);margin-top:14px}
+h2{font:800 34px/1.04 var(--display);letter-spacing:-.01em;margin:54px 0 10px;text-wrap:balance}
+h2 .n{font:500 13px/1 var(--mono);color:var(--sea2);display:block;letter-spacing:.1em;margin-bottom:10px}
+h3{font:600 20px/1.25 var(--display);margin:28px 0 6px}
+p{margin:0 0 16px}
+.lede::first-letter{font:900 72px/.8 var(--display);float:left;margin:6px 10px 0 0;color:var(--sea2)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0 8px}
+.stats div{background:var(--card);padding:14px 12px}
+.stats b{display:block;font:900 clamp(22px,4.4vw,32px)/1 var(--display);letter-spacing:-.01em}
+.stats b.h{color:var(--hot)} .stats b.c{color:var(--sea2)} .stats b.g{color:var(--quake)} .stats b.p{color:var(--ink)}
+.stats span{font:400 12px/1.35 var(--mono);color:var(--muted);display:block;margin-top:6px}
+@media (max-width:600px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.figure{margin:26px 0 30px}
+.fig-h{font:600 19px/1.25 var(--display);margin:0 0 4px}
+.fig-sub{font:400 13px/1.45 var(--mono);color:var(--muted);margin:0 0 12px}
+.src{font:400 12px/1.45 var(--mono);color:var(--muted);margin-top:10px}
+.chart{width:100%;position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--mono);fill:var(--fg)}
+.lab{font-size:12px}.lab.m{fill:var(--muted)}.lab.b{font-weight:500}.lab.s{font-size:11px}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font:400 12px/1.45 var(--mono);padding:8px 10px;border-radius:3px;max-width:300px;z-index:100001;transform:translate(-50%,calc(-100% - 12px));display:none}
+.tip b{font-weight:500}
+.controls{display:flex;gap:8px;align-items:center;margin:0 0 10px;flex-wrap:wrap}
+.scrollrow{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:2px;max-width:100%}
+.scrollrow .btn{flex:0 0 auto;white-space:nowrap}
+.ctl-l{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:2px;flex:0 0 auto;align-self:center}
+.btn{font:500 12px/1 var(--mono);background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:8px 10px;cursor:pointer;min-height:36px}
+.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:1px solid rgba(0,0,0,.2)}
+.btn:focus-visible,input:focus-visible,summary:focus-visible,select:focus-visible{outline:2px solid var(--sea2);outline-offset:2px}
+.searchbox{position:relative;flex:1 1 260px;min-width:0}
+input[type=search]{font:400 15px/1 var(--mono);background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:10px 11px;min-height:40px;width:100%}
+.suggest{position:absolute;left:0;right:0;top:100%;margin:2px 0 0;padding:0;list-style:none;background:var(--card);border:1px solid var(--border);z-index:1001;font:400 13px/1.3 var(--mono);display:none;max-height:340px;overflow:auto}
+.suggest li{padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--rule)}
+.suggest li span{color:var(--muted)}
+.suggest li[aria-selected="true"],.suggest li:hover{background:var(--panel)}
+.timebox{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:10px;align-items:center;margin:0 0 10px;font:500 13px/1 var(--mono)}
+@media (max-width:600px){.timebox{grid-template-columns:auto auto minmax(0,1fr)}.timebox #ylab{grid-column:1/-1}}
+.timebox .yv{font:900 26px/1 var(--display);min-width:5.4ch;text-align:center;color:var(--sea2);white-space:nowrap}
+.timebox input[type=range]{width:100%;accent-color:var(--sea2);height:28px}
+.sl{min-width:0;padding:0 8px}
+.ticks{position:relative;height:14px;margin:0 0 4px;font:400 10.5px/1 var(--mono);color:var(--muted)}
+.ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.play{width:42px;height:38px;border-radius:3px;border:1px solid var(--fg);background:var(--fg);color:var(--bg);font:600 15px/1 var(--mono);cursor:pointer}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+@media (max-width:900px){.mapgrid{grid-template-columns:1fr}}
+.side{background:var(--card);border:1px solid var(--border);padding:12px 12px 10px;font:400 13px/1.45 var(--mono);max-height:660px;overflow:auto}
+@media (max-width:900px){.side{max-height:none}}
+.side h4{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px}
+.side h4:first-child{margin-top:2px}
+.side .big{font:800 24px/1.1 var(--display);margin:2px 0 4px}
+.side .sub{color:var(--muted);font-size:12px;margin:0 0 8px}
+.side .story{font:400 15px/1.5 var(--body);margin:6px 0 10px}
+.side ol,.side ul{margin:4px 0 8px;padding-left:20px}
+.side li{margin:3px 0}
+.side li small,.side td small{color:var(--muted)}
+.side table{width:100%;border-collapse:collapse;margin:4px 0 6px}
+.side td{padding:4px 4px 4px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.side td.num{text-align:right;white-space:nowrap}
+.side .nav{display:flex;gap:6px;margin:8px 0 2px}
+.back{font:400 12px var(--mono);background:none;border:0;color:var(--muted);padding:0;cursor:pointer;text-decoration:underline;margin-bottom:6px}
+.go{cursor:pointer;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.lmap{height:620px;border:1px solid var(--border);background:var(--sea);border-radius:2px;position:relative}
+@media (max-width:600px){.lmap{height:min(64vh,470px)}}
+.mapfail{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font:400 14px/1.5 var(--mono);color:var(--muted)}
+.maplibregl-map{font:400 12px/1.4 var(--mono)}
+.maplibregl-ctrl-group{background:var(--card)!important}
+:root[data-theme="dark"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon{filter:invert(1)}
+.maplibregl-ctrl-attrib{background:color-mix(in srgb,var(--card) 85%,transparent)!important;color:var(--muted);font:400 11px/1.3 var(--mono)!important}
+.maplibregl-ctrl-attrib a{color:var(--fg)!important}
+.maplibregl-popup-content{background:var(--card);color:var(--fg);font:400 12.5px/1.45 var(--mono);padding:11px 13px;border:1px solid var(--border);border-radius:3px;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.maplibregl-popup-content b.t{display:block;font:700 16px/1.2 var(--display);margin-bottom:2px}
+.maplibregl-popup-content .al{color:var(--muted);font-size:11.5px;margin-bottom:6px}
+.maplibregl-popup-content table{border-collapse:collapse;margin:4px 0}
+.maplibregl-popup-content td{padding:2px 8px 2px 0;vertical-align:top}
+.maplibregl-popup-content td:first-child{color:var(--muted)}
+.maplibregl-popup-tip{border-top-color:var(--card)!important;border-bottom-color:var(--card)!important}
+.maplibregl-popup-close-button{font-size:18px;color:var(--muted);padding:0 6px}
+.lyr{margin:10px 0 0 10px}
+.lyrBtn{background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;font:600 12px/1 var(--mono);padding:8px 10px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.lyrBtn[aria-expanded="true"]{background:var(--fg);color:var(--bg)}
+.lyrPanel{background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:10px 12px 8px;margin-top:6px;width:250px;box-shadow:0 2px 10px rgba(0,0,0,.15);font:400 12px/1.3 var(--mono);max-height:min(56vh,460px);overflow:auto}
+.lyrPanel[hidden]{display:none}
+.lyrPanel .row{margin:0 0 9px}
+.lyrPanel label{display:flex;gap:6px;align-items:center;cursor:pointer;font-weight:600}
+.lyrPanel .sub{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:11px;margin-top:3px}
+.lyrPanel .sub span{flex:0 0 58px}
+.lyrPanel input[type=range]{width:100%;accent-color:var(--fg)}
+.lyrPanel .hd{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 7px;border-top:1px solid var(--rule);padding-top:9px}
+.lyrPanel .reset{font:400 11px var(--mono);color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.lyrPanel p.sub{display:block}
+.cityL{font:500 11px/1 var(--mono);color:var(--fg);white-space:nowrap;text-shadow:0 0 3px var(--bg),0 0 3px var(--bg),0 0 2px var(--bg);pointer-events:none}
+.cityL i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--fg);margin-right:4px;vertical-align:1px}
+.cntL{font:600 10.5px/1 var(--mono);color:var(--muted);white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;text-shadow:0 0 3px var(--bg),0 0 3px var(--bg);pointer-events:none}
+.ocL{font:italic 400 13px/1 var(--body);color:var(--sea2);opacity:.8;white-space:nowrap;letter-spacing:.14em;pointer-events:none}
+.ocL.s{font-size:11.5px;letter-spacing:.05em}
+.mapnote{margin:6px 0 0;font:400 12px/1.35 var(--mono);color:var(--muted);min-height:16px}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;font:400 12px/1.3 var(--mono);color:var(--muted);margin-top:8px;align-items:center}
+.legend span{display:inline-flex;align-items:center}
+.legend i{display:inline-block;width:13px;height:13px;margin-right:6px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+.legend i.sq{border-radius:2px}
+.legend i.dot{width:8px;height:8px}
+.legend .k{color:var(--fg);font-weight:500;margin-right:-6px}
+.pull{font:600 26px/1.25 var(--display);border-left:6px solid var(--sea2);padding:4px 0 4px 18px;margin:30px 0}
+.note{background:var(--panel);border:1px solid var(--rule);padding:14px 16px;font-size:16px;margin:22px 0}
+.note h3{margin-top:0}
+table.tbl{width:100%;border-collapse:collapse;font:400 13px/1.4 var(--mono)}
+table.tbl th{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 6px 6px 0;border-bottom:2px solid var(--fg)}
+table.tbl td{padding:6px 6px 6px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+table.tbl td.r,table.tbl th.r{text-align:right;white-space:nowrap}
+table.tbl tr[data-i]{cursor:pointer}
+table.tbl tr[data-i]:hover td{background:var(--panel)}
+.tablebox{max-height:460px;overflow:auto;border:1px solid var(--border);background:var(--card);padding:0 10px}
+details{margin:14px 0}
+summary{font:500 13px/1.4 var(--mono);cursor:pointer;color:var(--fg);padding:8px 0}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.cta a{font:500 13px/1 var(--mono);text-decoration:none;border:1px solid var(--fg);padding:11px 14px;border-radius:3px}
+.cta a.p{background:var(--ink);border-color:var(--ink);color:#fff}
+:root[data-theme="dark"] .cta a.p{color:#11151B}
+footer{border-top:6px double var(--fg);margin-top:56px;padding-top:16px;font:400 13px/1.55 var(--mono);color:var(--muted)}
+footer p{margin:0 0 10px}
+.theme{position:fixed;right:12px;bottom:12px;z-index:1002}
+#tourText{display:none}
+@media print{.theme,.controls{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker"><b>Data study</b><span>Natural hazards</span><span>World, {{source.first_name|raw}} to {{source.last_year|raw}}</span></div>
+<header class="hero">
+  <h1>Every <span class="a">tsunami</span> on record</h1>
+  <svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><g id="heroMark"></g></svg>
+  <p class="dek">{{source.n|int}} tsunamis from NOAA's Global Historical Tsunami Database, from the eruption of Thera to {{source.last_year|raw}}: what set them off, the {{source.runups_coast|int}} places where the water was seen, how high it ran, how far it crossed the ocean, and the people it killed.</p>
+</header>
+<div class="byline">Dr Tristan Hotham · Independent researcher · 2026 · Data: NOAA National Centers for Environmental Information, Global Historical Tsunami Database (doi:10.7289/V5PN93H7), public domain; Natural Earth; PB2002 plate boundaries</div>
+
+<div class="stats">
+  <div><b class="p">{{source.n|int}}</b><span>definite and probable tsunamis, {{source.first_name|raw}} to {{source.last_year|raw}}</span></div>
+  <div><b class="g">{{causes.Earthquake.pct|int}}%</b><span>started with an earthquake alone; {{causes.Earthquake and landslide.pct|int}}% more with an earthquake and a landslide</span></div>
+  <div><b class="c">{{famous.lituya.max_run|int}} m</b><span>the highest runup: Lituya Bay, Alaska, {{famous.lituya.yname|raw}}</span></div>
+  <div><b class="h">{{deaths.total|int}}</b><span>tsunami deaths recorded; {{deaths.y2004_pct|int}}% of them on 26 December 2004</span></div>
+</div>
+
+<p class="lede">A tsunami is the sea moving all at once. Something shoves a huge volume of water, usually the sea floor jerking up in an earthquake, sometimes a volcano or a mountainside falling into a bay, and the push spreads out as waves that can cross an ocean in a day. Near the source they can be tens of metres high. Far away they may be a few centimetres on a tide gauge, or a surge that still drowns a harbour.</p>
+<p>NOAA's National Centers for Environmental Information (NCEI) keep a list of every one they can find, from geology and ancient texts to deep-ocean pressure sensors. I took the whole database, {{source.events|int}} possible tsunami sources and {{source.runups|int}} records of where the water arrived, and kept the {{source.n|int}} that NCEI rates as definite ({{source.definite|int}}) or probable ({{source.probable|int}}). Press play on the map to watch the record build up, or take the tour of the famous waves. Click any source to draw lines to every place its water reached.</p>
+
+<h2><span class="n">01 · The map</span>Where they start, and where the water went</h2>
+<div class="bleed" id="atlas">
+<div class="timebox"><button class="play" id="play" aria-label="Play through time">&#9654;</button><span class="yv" id="yv">2026</span><div class="sl"><input type="range" id="yr" min="0" max="1000" step="1" value="1000" aria-label="Year (the scale stretches the recent past)"><div class="ticks" id="ticks" aria-hidden="true"></div></div><span id="ylab" style="color:var(--muted);font-size:12px">everything to here</span></div>
+<div class="controls">
+  <div class="scrollrow" id="modeRow"><span class="ctl-l">Show</span><button class="btn" data-m="upto" aria-pressed="true">Everything to then</button><button class="btn" data-m="near" aria-pressed="false">Only around then</button></div>
+  <div class="scrollrow" id="sizeRow"><span class="ctl-l">Size</span><button class="btn" data-s="deaths" aria-pressed="true">Deaths</button><button class="btn" data-s="height" aria-pressed="false">Height</button></div>
+</div>
+<div class="controls"><div class="scrollrow" id="causeRow"><span class="ctl-l">Cause</span></div></div>
+<div class="controls"><div class="scrollrow" id="tourRow"><span class="ctl-l">Famous waves</span></div></div>
+<div class="controls">
+  <div class="searchbox"><input type="search" id="q" placeholder="Search a place, a country or a year (Lisbon, Chile 1960, Krakatau...)" aria-label="Search tsunamis by place, country or year" autocomplete="off"><ul class="suggest" id="sug" role="listbox"></ul></div>
+</div>
+<div class="mapgrid">
+  <div><div id="map" class="lmap" role="application" aria-label="World map of tsunami sources and the places the water reached"></div>
+    <div class="legend" id="legend"></div><div class="mapnote" id="mapnote"></div></div>
+  <div class="side" id="side" aria-live="polite"></div>
+</div>
+<p class="src">Large circles: tsunami sources NCEI rates definite or probable ({{page.events_located|int}} of the {{source.n|int}} have a position), coloured by cause and sized by the deaths NCEI records for the tsunami (or by the maximum water height). Small dots: the {{page.runups|int}} places with a position where the water was recorded, coloured by height. Click a source to join it to its places: the lines are straight joins, not the path the wave took. The time scale stretches the recent past, because most of the record is recent. Source: NOAA NCEI/WDS Global Historical Tsunami Database, doi:10.7289/V5PN93H7 (public domain). Outlines: Natural Earth. Plate boundaries: PB2002 (Bird 2003; GeoJSON by H. Ahlenius). Sea floor tiles © Esri, GEBCO, NOAA.</p>
+</div>
+
+<h2><span class="n">02 · What starts them</span>Earthquakes, mostly, and then mountains falling into the sea</h2>
+<p>Of the {{source.n|int}} tsunamis, {{causes.Earthquake.n|int}} ({{causes.Earthquake.pct|int}}%) were started by an earthquake alone, and {{causes.Earthquake and landslide.n|int}} ({{causes.Earthquake and landslide.pct|f1}}%) by an earthquake that also set off a landslide, so {{eq_any_pct|int}}% involve an earthquake. These are mostly big ones: the median magnitude among the {{mag.n|int}} with one recorded is {{mag.median|f1}}, and {{mag.ge9|int}} reached magnitude 9 or more. They cluster on the edges of the tectonic plates: {{plates.within100_pct|int}}% of earthquake sources lie within 100 km of a plate boundary in Peter Bird's model, and {{plates.within250_pct|int}}% within 250 km.</p>
+<div class="figure"><p class="fig-h">What starts a tsunami, and what kills</p><p class="fig-sub">Share of the {{source.n|int}} definite and probable tsunamis by NCEI's cause code, grouped (left), and share of the {{deaths.total|int}} recorded tsunami deaths (right). Hover a bar.</p><div class="chart" id="causeChart"></div></div>
+<p>The rest are stranger. Landslides account for {{causes.Landslide.n|int}} ({{causes.Landslide.pct|f1}}%), many of them rock falls into fjords and lakes. Volcanoes account for {{causes.Volcano.n|int}} ({{causes.Volcano.pct|f1}}%), from the collapse of Thera in the Bronze Age to Krakatau in 1883 and Hunga Tonga in 2022. {{causes.Meteorological.n|int}} are meteotsunamis, waves pushed by fast-moving storms and pressure jumps rather than by the ground. Two were explosions: the Halifax munitions ship in 1917 and the blasting of Ripple Rock, a reef in a Canadian channel, in 1958. Volcanoes cause few tsunamis but deadly ones: {{causes.Volcano.deaths_pct|int}}% of all recorded tsunami deaths, mostly Krakatau and the collapse of Mount Unzen's flank into Shimabara Bay in 1792.</p>
+
+<h2><span class="n">03 · Where</span>Two in three around the Pacific</h2>
+<p>The Pacific is ringed by subduction zones, where one plate dives under another and stores up the strain that great earthquakes release. {{oceans.Pacific.n|int}} tsunamis ({{oceans.Pacific.pct|int}}%) started in NCEI's Pacific regions, and {{ring.n|int}} ({{ring.pct|int}}%) on the Pacific rim itself, the Ring of Fire, leaving out Hawaii. Japan alone accounts for {{ring.japan|int}} ({{ring.japan_pct|int}}%). The Mediterranean, with its long written history, has {{oceans.Mediterranean.n|int}} ({{oceans.Mediterranean.pct|int}}%); the Atlantic and the Caribbean together {{oceans.Atlantic and Caribbean.n|int}} ({{oceans.Atlantic and Caribbean.pct|int}}%); the Indian Ocean {{oceans.Indian Ocean.n|int}} ({{oceans.Indian Ocean.pct|f1}}%).</p>
+<div class="figure"><p class="fig-h">Where tsunamis start, and where people died</p><p class="fig-sub">Share of tsunamis (left) and of recorded tsunami deaths (right) by ocean, from NCEI's region of the source. Hover a bar.</p><div class="chart" id="oceanChart"></div></div>
+<p>Deaths do not follow the count. The Indian Ocean has only {{oceans.Indian Ocean.pct|f1}}% of the tsunamis but {{oceans.Indian Ocean.deaths_pct|int}}% of the recorded deaths, almost all from a single morning in 2004. The Pacific, with two thirds of the tsunamis, has {{oceans.Pacific.deaths_pct|int}}%.</p>
+
+<h2><span class="n">04 · How high</span>{{famous.lituya.max_run|int}} metres up a mountainside</h2>
+<p>NCEI records a water height for {{heights.n_ht|int}} places. Most are modest: the median is {{heights.median|f1}} m, and {{heights.under1_pct|int}}% are under a metre. But the record heights are not from the great ocean tsunamis at all. They come from landslides into narrow bays. On 9 July 1958 (10 July in universal time) a magnitude {{famous.lituya.mag|f1}} earthquake shook a mass of rock into Lituya Bay in Alaska, and the water ran {{famous.lituya.max_run|f1}} m up the opposite slope, stripping the forest. In 2025 a rockslide into Tracy Arm, another Alaskan fjord, sent water {{highest.1.ht|int}} m up its walls. All {{heights.ge100_events|int}} tsunamis with a runup of 100 m or more were set off by a landslide, a volcano, or both.</p>
+<div class="figure"><p class="fig-h">The highest water on record</p><p class="fig-sub">Highest runup recorded for each tsunami: the top {{highest_n|raw}}, coloured by cause. A runup is the height above sea level that the water reached on land. Hover a bar; click to see it on the map.</p><div class="chart" id="runupChart"></div><div class="legend" id="runupLegend"></div></div>
+<p>For earthquakes alone, the highest is {{heights.eq_max.ht|int}} m, at {{heights.eq_max.place|raw}} after a quake in the Shumagin Islands of Alaska in {{heights.eq_max.yname|raw}}. In 2011, the Tohoku earthquake drove the water {{famous.tohoku.max_run|f1}} m up the coast of Iwate; in 2004 it reached {{famous.sumatra.max_run|f1}} m in Indonesia.</p>
+
+<h2><span class="n">05 · How far</span>Across whole oceans, at the speed of a jet</h2>
+<p>A big tsunami in deep water travels like a shallow wave over the whole ocean, at a speed set by the depth: about {{speed.theory_4km_kmh|int}} km an hour over four kilometres of water. The records agree. For the {{speed.n|int}} places more than 1,000 km from the source with a recorded travel time, the median speed works out at {{speed.median_kmh|int}} km an hour (half lie between {{speed.q25|int}} and {{speed.q75|int}}).</p>
+<div class="figure"><p class="fig-h">Distance against travel time</p><p class="fig-sub">Every place with a recorded travel time and distance, coloured by water height. The dashed lines are steady speeds. Hover a dot. Loading the {{page.runups|int}} places...</p><div class="chart" id="travelChart"></div></div>
+<p>So the waves that crossed oceans came on a timetable. In 1946 an earthquake and landslide off Unimak Island in the Aleutians destroyed a lighthouse there and, {{travel.aleut_hilo.first_h|f1}} hours later and {{travel.aleut_hilo.dist|int}} km away, struck Hilo in Hawaii, where NCEI records {{travel.aleut_hilo.deaths_max|int}} deaths. In 1960 the largest earthquake ever measured, magnitude {{famous.chile.mag|f1}} in southern Chile, sent water to Hilo after {{travel.chile_hilo.first_h|f1}} hours ({{travel.chile_hilo.deaths_max|int}} deaths there) and to Japan after {{travel.chile_japan.first_h|f1}} hours, about {{travel.chile_japan.dist|int}} km from Chile. In 2004 the Sumatra wave reached Kenya after {{travel.sum_kenya.first_h|f1}} hours, Tanzania after {{travel.sum_tanzania.first_h|f1}} and South Africa after {{travel.sum_safrica.first_h|f1}}; Somalia, about {{travel.sum_somalia.dist|int}} km away, saw water up to {{travel.sum_somalia.max_ht|f1}} m.</p>
+<div class="figure"><p class="fig-h">The farthest the water was measured</p><p class="fig-sub">For each tsunami, the farthest place where a height above zero was recorded (sea waves only; see below for the eruptions' air waves). The top {{farthest_n|raw}}. Click a row to see it on the map.</p><div class="tablebox"><table class="tbl" id="farTable"></table></div></div>
+<p>The farthest measurement belongs to 2004: {{farthest.0.ht|f1}} m on a tide gauge at {{farthest.0.place|raw}} in the Galápagos, {{farthest.0.dist|int}} km from Sumatra, {{farthest.0.trav_h|int}} hours and {{farthest.0.trav_m|int}} minutes after the earthquake, having crossed the Indian Ocean and much of the Pacific. Chilean earthquakes fill most of the rest of the list, because the Pacific carries their waves across to China, Taiwan and Japan, nearly half the world away. {{dist.over10000_events|int}} tsunamis were measured more than 10,000 km from where they began.</p>
+<div class="note"><h3>Waves pushed by the air</h3><p>Two eruptions moved the sea in a different way. NCEI marks {{atm.n|int}} places where the water rose as the pressure wave from an eruption passed through the air: {{atm.tonga|int}} for Hunga Tonga in 2022 and {{atm.krakatau|int}} for Krakatau in 1883. Because the air wave circled the globe, so did the disturbance: Hunga Tonga's water was recorded in {{famous.tonga.countries|int}} countries, the most of any event, as far as {{atm.tonga_far_place|raw}} in {{atm.tonga_far_country|raw}}, {{atm.tonga_far_km|int}} km away, and Krakatau's as far as {{atm.krakatau_far_place|raw}} in {{atm.krakatau_far_country|raw}}. I keep these places on the map but leave them out of the distance records above.</p></div>
+
+<h2><span class="n">06 · The dead</span>{{deaths.total|int}} deaths in the record</h2>
+<p>NCEI records a tsunami death toll for {{deaths.n_events|int}} of the {{source.n|int}} tsunamis ({{deaths.n_events_pct|int}}%), and together they add up to {{deaths.total|int}} people. That is a floor, not a total: for {{deaths.only_order|int}} more NCEI gives only a rough order of magnitude, and for most old events nobody counted. The toll is dominated by a few days. The Indian Ocean tsunami of 26 December 2004 killed {{deadliest.0.deaths|int}} people, {{deaths.y2004_pct|int}}% of every tsunami death in the database. The ten deadliest account for {{deaths.top10_pct|int}}%.</p>
+<div class="figure"><p class="fig-h">The deadliest tsunamis</p><p class="fig-sub">Deaths caused by the tsunami, as NCEI records them, for the {{deadliest_n|raw}} deadliest. Old figures are estimates. Hover a bar for the event's total, including the earthquake; click to see it on the map.</p><div class="chart" id="deathChart"></div></div>
+<p>After 2004 come Lisbon in 1755 ({{deadliest.1.deaths|int}} tsunami deaths, from an earthquake that also shook the city down and set it on fire), Krakatau in 1883 ({{deadliest.2.deaths|int}}), the Meiji Sanriku tsunami in Japan in 1896 ({{deadliest.3.deaths|int}}), northern Chile in 1868 ({{deadliest.4.deaths|int}}) and Tohoku in 2011 ({{deadliest.5.deaths|int}}). Each figure is a town or a coastline emptied. Since 2000 alone, NCEI records {{deaths.since2000|int}} tsunami deaths.</p>
+<p>NCEI also gives a second figure, the total deaths for the whole event, and it is easy to confuse the two. By that measure the deadliest entry is Haiti in 2010, with {{haiti.deaths_total|int}} deaths, but the tsunami that followed the earthquake killed {{haiti.deaths|int}}. The Great Kanto earthquake of 1923 killed {{kanto.deaths_total|int}} people; its tsunami, {{kanto.deaths|int}}. Everything on this page uses the tsunami's own toll.</p>
+
+<h2><span class="n">07 · Through time</span>A record that grows with the people keeping it</h2>
+<p>The database starts with the eruption of Thera, dated to {{source.first_name|raw}}, but the early record is thin: only {{cent.before0|int}} tsunamis before AD 1 and {{cent.before1500|int}} before 1500. Then it fills: {{cent.c1600|int}} in the 1600s, {{cent.c1700|int}} in the 1700s, {{cent.c1800|int}} in the 1800s and {{cent.c1900|int}} in the 1900s. {{cent.since1900_pct|int}}% of the record is from 1900 or later.</p>
+<div class="figure"><p class="fig-h">Tsunamis recorded per century</p><p class="fig-sub">Definite and probable tsunamis by century and cause, AD 1 to {{source.last_year|raw}} (the {{cent.before0|int}} earlier ones are left off). The 2000s are partial. Hover a bar.</p><div class="chart" id="centuryChart"></div></div>
+<p>This is not a rise in tsunamis. It is a rise in seeing them: writing spreading around the coasts, newspapers, then tide gauges in the 1800s, seismometers in the 1900s and deep-ocean pressure sensors since the 1990s, which catch waves of a few centimetres that nobody on shore would notice. Meteotsunamis show it clearly: {{modern.met_before1950|int}} before 1950, {{modern.met_since2000|int}} since 2000. Even in the instrument era the count creeps up, from {{decades.0.n|int}} in 1900 to 1909 to {{decades.11.n|int}} in 2010 to 2019. Since 1950 the database has averaged {{modern.per_year|f1}} tsunamis a year, and {{modern.deadly_per_year|f1}} a year that killed someone.</p>
+
+<h2><span class="n">08 · Who is hit</span>Japan, above all</h2>
+<p>Counting the places where water was recorded, {{n_countries|int}} countries and territories have been reached by at least one tsunami. Japan has been reached by the most: {{countries.0.events|int}} different tsunamis, followed by the United States ({{countries.1.events|int}}) and Indonesia ({{countries.2.events|int}}). Japan also has the most measurements, {{countries_runups.0.runups|int}}, {{japan.japan_runups_pct|int}}% of all places in the database, {{japan.tohoku_runups|int}} of them from the survey after Tohoku in 2011.</p>
+<div class="figure"><p class="fig-h">The countries reached most often</p><p class="fig-sub">Number of different tsunamis recorded in each country or territory (US and UK territories grouped). Hover a bar.</p><div class="chart" id="countryChart"></div></div>
+
+<h2><span class="n">09 · How I did this</span>Methods and caveats</h2>
+<p><b>Data.</b> NOAA NCEI's Global Historical Tsunami Database, fetched from the NCEI Hazard Service API in {{source.fetched|raw}}: {{source.events|int}} source events and {{source.runups|int}} runup records. NCEI rates each source from 4 (definite) to 3 (probable), 2 (questionable), 1 (very doubtful), 0 (a seiche or disturbance in an inland river or lake only) and minus 1 (an erroneous entry). I count only 3 and 4: {{source.n|int}} tsunamis, leaving out {{source.other|int}} entries. The cause codes are NCEI's: 1 earthquake, 2 questionable earthquake, 3 earthquake and landslide, 4 volcano and earthquake, 5 volcano, earthquake and landslide, 6 volcano, 7 volcano and landslide, 8 landslide, 9 meteorological, 10 explosion, 11 astronomical tide, 0 unknown. I checked them against events whose cause is not in doubt (the Halifax explosion is 10, the Vajont dam landslide 8, Krakatau 6) and grouped them as shown.</p>
+<p><b>Places.</b> A runup record is a place where NCEI records the water: a survey mark, a tide gauge or an eyewitness account. I keep the {{source.runups_kept|int}} records that belong to a definite or probable tsunami and are not flagged as doubtful ({{source.runups_doubtful|int}} are). NCEI also flags places where the water was moved by an eruption's air wave or by the weather; I keep these, and leave the air wave places out of the distance records. {{source.runups_deep|int}} records come from deep-ocean pressure gauges far out at sea; they are left off the map and out of the country counts. Distance from the source and travel time are NCEI's. Oceans come from NCEI's region of the source; the Ring of Fire here means the regions around the rim of the Pacific (Japan, Kamchatka, Alaska, the Americas' Pacific coasts, the western Pacific islands, eastern Indonesia, New Zealand), not Hawaii; it leaves out the {{ring.sunda|int}} tsunamis off Sumatra and Java, which NCEI places in the Indian Ocean.</p>
+<p><b>Deaths.</b> I use NCEI's count of deaths caused by the tsunami, never the total for the whole event, and I do not add up deaths over runup places, because one town can appear several times. Many historical figures are estimates, and some are disputed. The record before 1900 is very incomplete, and the counts per century mostly measure how much was written down.</p>
+<details><summary>Sources and licences</summary>
+<ul>
+<li>National Geophysical Data Center / World Data Service: NCEI/WDS Global Historical Tsunami Database. NOAA National Centers for Environmental Information. doi:10.7289/V5PN93H7. Fetched from the NCEI Hazard Service API in {{source.fetched|raw}}. US government work, public domain.</li>
+<li>Bird, P. (2003) An updated digital model of plate boundaries. Geochemistry, Geophysics, Geosystems 4(3), 1027. GeoJSON by Hugo Ahlenius, Nordpil (github.com/fraxen/tectonicplates), Open Data Commons Attribution License.</li>
+<li>Natural Earth country outlines and populated places (public domain).</li>
+<li>Sea floor tiles on the map: © Esri, GEBCO, NOAA, National Geographic, DeLorme, HERE, Geonames.org and other contributors.</li>
+</ul></details>
+
+<div class="cta"><a class="p" href="https://doi.org/10.5281/zenodo.23873531">Read the paper</a><a href="https://github.com/Tristan-Hotham/tsunamis">Data and code</a><a href="https://blog.tristanhotham.com/2026/10/31/tsunamis/">Blog post</a></div>
+
+<footer>
+<p>Dr Tristan Hotham, Independent researcher. ORCID <a href="https://orcid.org/0000-0003-4931-9349">0000-0003-4931-9349</a>.</p>
+<p>Cite as: Hotham, T. (2026) Every tsunami on record: sources, runups and deaths in NOAA's Global Historical Tsunami Database. Zenodo. <a href="https://doi.org/10.5281/zenodo.23873531">https://doi.org/10.5281/zenodo.23873531</a></p>
+<p>Data: NOAA NCEI/WDS Global Historical Tsunami Database, doi:10.7289/V5PN93H7 (public domain). Licence: derived data and text CC BY 4.0, code MIT.</p>
+<p>I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.</p>
+</footer>
+</div>
+
+<div id="tourText">
+<div data-k="thera">The oldest definite tsunami in the database: the eruption and collapse of Thera (Santorini) in the Aegean, dated to {{famous.thera.yname|raw}}. NCEI gives a maximum water height of {{famous.thera.max_ht|int}} m and two places, the north and east coasts of Crete and Ugarit on the Syrian coast, but no death toll. For events this old the date and the size are reconstructions from geology and archaeology.</div>
+<div data-k="lisbon">On the morning of 1 November 1755 a magnitude {{famous.lisbon.mag|f1}} earthquake off Portugal shook Lisbon, and the sea followed. NCEI records {{famous.lisbon.deaths|int}} tsunami deaths and water up to {{famous.lisbon.max_run|f1}} m at {{famous.lisbon.max_run_place|raw}} in Spain. It was seen in {{famous.lisbon.countries|int}} countries, as far as {{famous.lisbon.far_place|raw}} in the {{famous.lisbon.far_country|raw}}, {{famous.lisbon.far_km|int}} km away.</div>
+<div data-k="cascadia">In January 1700 the Cascadia fault off the Pacific coast of North America broke in a magnitude {{famous.cascadia.mag|f1}} earthquake. Nobody wrote it down there. Every one of the {{famous.cascadia.runups|int}} places in the database is in Japan, where a tsunami arrived with no earthquake felt, up to {{famous.cascadia.max_run|f1}} m at {{famous.cascadia.max_run_place|raw}}, about {{cascadia_japan.dist|int}} km from the source.</div>
+<div data-k="krakatau">On 27 August 1883 the volcano of Krakatau, between Java and Sumatra, blew itself apart. The waves killed {{famous.krakatau.deaths|int}} people around the Sunda Strait, NCEI records, and reached {{famous.krakatau.max_run|f1}} m at {{famous.krakatau.max_run_place|raw}}. The eruption's air wave then moved the sea around the world: {{atm.krakatau|int}} places in {{atm.krakatau_countries|int}} countries, as far as {{atm.krakatau_far_place|raw}}, {{atm.krakatau_far_country|raw}}.</div>
+<div data-k="sanriku">On 15 June 1896 a magnitude {{famous.sanriku.mag|f1}} earthquake off the Sanriku coast of north-east Japan sent water up to {{famous.sanriku.max_run|f1}} m at {{famous.sanriku.max_run_place|raw}}. NCEI records {{famous.sanriku.deaths|int}} deaths, the fourth highest toll in the database. The wave was measured as far as {{famous.sanriku.far_place|raw}} in the {{famous.sanriku.far_country|raw}}, {{famous.sanriku.far_km|int}} km away.</div>
+<div data-k="aleutian">On 1 April 1946 a magnitude {{famous.aleutian.mag|f1}} earthquake and landslide off Unimak Island in the Aleutians sent water {{famous.aleutian.max_run|f1}} m up the cliff at {{famous.aleutian.max_run_place|raw}}, where it destroyed the lighthouse. Less than five hours later ({{travel.aleut_hilo.first_h|f1}}) it reached Hilo in Hawaii, {{travel.aleut_hilo.dist|int}} km away, where NCEI records {{travel.aleut_hilo.deaths_max|int}} deaths. In all, {{famous.aleutian.deaths|int}} people died.</div>
+<div data-k="lituya">On the evening of 9 July 1958 (10 July in universal time, the date NCEI uses) a magnitude {{famous.lituya.mag|f1}} earthquake knocked a mass of rock into the head of Lituya Bay in Alaska. The water ran {{famous.lituya.max_run|f1}} m up the slope opposite, the highest runup ever recorded, and swept the bay. NCEI records {{famous.lituya.deaths|int}} deaths. Choose Height as the size to see how far above every other source it sits.</div>
+<div data-k="chile">On 22 May 1960 southern Chile had the largest earthquake ever measured, magnitude {{famous.chile.mag|f1}}. The tsunami killed {{famous.chile.deaths|int}} people, NCEI records, and crossed the Pacific: Hilo after {{travel.chile_hilo.first_h|f1}} hours, Japan after {{travel.chile_japan.first_h|f1}}. It was measured in {{famous.chile.countries|int}} countries, as far as {{famous.chile.far_place|raw}}, {{famous.chile.far_km|int}} km away.</div>
+<div data-k="alaska">On 28 March 1964 (27 March local time) a magnitude {{famous.alaska.mag|f1}} earthquake struck Prince William Sound in Alaska, with underwater landslides in its fjords. The water reached {{famous.alaska.max_run|f1}} m at {{famous.alaska.max_run_place|raw}}. NCEI records {{famous.alaska.deaths|int}} tsunami deaths, and the wave was measured in {{famous.alaska.countries|int}} countries, as far as Antarctica.</div>
+<div data-k="sumatra">On 26 December 2004 a magnitude {{famous.sumatra.mag|f1}} earthquake off Sumatra caused the deadliest tsunami on record: {{famous.sumatra.deaths|int}} people, NCEI records, around the whole Indian Ocean. Water reached {{famous.sumatra.max_run|f1}} m in Indonesia. It was measured in {{famous.sumatra.countries|int}} countries, the most of any sea wave, and as far as {{famous.sumatra.far_place|raw}} in the Galápagos, {{famous.sumatra.far_km|int}} km away.</div>
+<div data-k="tohoku">On 11 March 2011 a magnitude {{famous.tohoku.mag|f1}} earthquake off Tohoku in Japan sent water {{famous.tohoku.max_run|f1}} m up the coast of Iwate. NCEI records {{famous.tohoku.deaths|int}} deaths. Japan's surveys after the disaster produced {{famous.tohoku.runups|int}} measurements, more than any other event. The wave reached Chile after {{travel.tohoku_chile.first_h|f1}} hours.</div>
+<div data-k="tonga">On 15 January 2022 the undersea volcano Hunga Tonga Hunga Ha'apai erupted. Water reached {{famous.tonga.max_run|f1}} m in Tonga and NCEI records {{famous.tonga.deaths|int}} deaths. Its air wave circled the planet and moved the sea in {{famous.tonga.countries|int}} countries, the most of any event, as far as {{atm.tonga_far_place|raw}} in {{atm.tonga_far_country|raw}}.</div>
+</div>
+
+<div class="tip" id="tip"></div>
+<button class="btn theme" id="theme" aria-label="Toggle dark mode">◐</button>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+const R = /*RESULTS*/;
+const SITE = /*SITE*/;
+const WORLD = /*WORLD*/;
+const PLATES = /*PLATES*/;
+const CMETA = /*COUNTRIES*/;
+const OCN = /*OCEANS*/;
+const CITIES = /*CITIES*/;
+const fmt = n => n == null || n === "" ? "n/a" : Math.round(n).toLocaleString("en-GB");
+const f1 = n => n == null ? "n/a" : (+n).toLocaleString("en-GB", { maximumFractionDigits: 1 });
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const tip = document.getElementById("tip");
+function showTip(h, x, y) { tip.innerHTML = h; tip.style.display = "block"; const w = tip.offsetWidth; x = Math.max(w / 2 + 8, Math.min(innerWidth - w / 2 - 8, x)); tip.style.left = x + scrollX + "px"; tip.style.top = y + scrollY + "px"; }
+function hideTip() { tip.style.display = "none"; }
+document.addEventListener("click", e => { if (!e.target.closest || !e.target.closest(".chart")) hideTip(); });
+const NS = "http://www.w3.org/2000/svg";
+const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const lbl = (svg, x, y, s, cls = "lab", anchor = "start") => { const t = el("text", { x, y, class: cls, "text-anchor": anchor }, svg); t.textContent = s; return t; };
+const redraws = [];
+function resp(box, render) { let last = 0; const go = force => { const w = Math.max(280, Math.round(box.clientWidth)); if (!force && Math.abs(w - last) < 4) return; last = w; box.innerHTML = ""; render(w, w < 560); }; new ResizeObserver(() => go()).observe(box); go(); redraws.push(() => go(true)); }
+const isDark = () => { const r = document.documentElement; return r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const small = () => innerWidth < 900;
+const yname = y => y < 0 ? `${-y} BC` : y < 1000 ? `AD ${y}` : String(y);
+const MON = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const COLS = SITE.cols;
+const EV = SITE.rows.map((r, i) => { const o = { i }; COLS.forEach((c, k) => o[c] = r[k]); return o; });
+const GROUPS = SITE.groups, GC = GROUPS.map(g => g[1]), GNAME = GROUPS.map(g => g[0]);
+const HB = SITE.ht_bins, HL = SITE.ht_labels;
+const hbin = h => { if (h == null) return -1; for (let k = 0; k < HB.length; k++) if (HB[k][0] == null || h < HB[k][0]) return k; return HB.length - 1; };
+const HCOL = k => k < 0 ? (isDark() ? "#7C838C" : "#9AA0A6") : (isDark() && k >= 4 ? ["#7FB6E3", "#A9CFF0"][k - 4] : HB[k][1]);
+const YMIN = SITE.rows.reduce((a, r) => Math.min(a, r[1]), 0), YMAX = R.source.last_year;
+const when = e => (e.day ? e.day + " " : "") + (e.month ? MON[e.month - 1] + " " : "") + yname(e.year);
+const evName = e => `${e.place}${e.country && !e.place.toLowerCase().includes(e.country.toLowerCase()) ? ", " + e.country : ""}`;
+
+/* hero mark: a wave over a sea floor fault */
+(function () {
+  const g = document.getElementById("heroMark");
+  el("path", { d: "M8 70 C24 70 30 34 52 30 C70 27 80 46 74 56 C70 63 60 60 62 52", fill: "none", stroke: "#173F80", "stroke-width": 7, "stroke-linecap": "round" }, g);
+  el("path", { d: "M8 70 C30 72 60 74 112 70", fill: "none", stroke: "#3D8BC4", "stroke-width": 4, "stroke-linecap": "round" }, g);
+  el("path", { d: "M8 84 C40 86 70 82 112 84", fill: "none", stroke: "#6FB2D9", "stroke-width": 3, "stroke-linecap": "round", opacity: .8 }, g);
+  el("path", { d: "M10 108 L56 108 L62 98 L110 98", fill: "none", stroke: "currentColor", "stroke-width": 3 }, g);
+  el("path", { d: "M59 103 L66 95", stroke: "#D9822B", "stroke-width": 4, "stroke-linecap": "round" }, g);
+})();
+
+/* ---------- time: a stretched scale ---------- */
+const KN = [[0, YMIN], [70, 0], [200, 1500], [360, 1800], [570, 1900], [1000, YMAX]];
+function yearAt(v) { for (let k = 1; k < KN.length; k++) if (v <= KN[k][0]) { const [a, ya] = KN[k - 1], [b, yb] = KN[k]; return Math.round(ya + (yb - ya) * (v - a) / (b - a)); } return YMAX; }
+function valAt(y) { for (let k = 1; k < KN.length; k++) if (y <= KN[k][1]) { const [a, ya] = KN[k - 1], [b, yb] = KN[k]; return a + (b - a) * (y - ya) / (yb - ya); } return 1000; }
+(function ticks() { const t = document.getElementById("ticks"); const T = small() ? [[0, "AD 1"], [1700, "1700"], [1900, "1900"], [2000, "2000"]] : [[0, "AD 1"], [1000, "1000"], [1500, "1500"], [1700, "1700"], [1800, "1800"], [1900, "1900"], [1950, "1950"], [2000, "2000"]];
+  t.innerHTML = T.map(([y, s]) => `<span style="left:${(valAt(y) / 10).toFixed(2)}%">${s}</span>`).join(""); })();
+
+/* ---------- state ---------- */
+const LYDEF = { bathy: false, bathyK: 70, plates: true, borders: true, cnames: true, onames: true, cities: false, runs: true, lines: true, size: 1 };
+const LY = { ...LYDEF };
+try { Object.assign(LY, JSON.parse(localStorage.getItem("ts_layers") || "{}")); } catch (e) {}
+const saveLY = () => { try { localStorage.setItem("ts_layers", JSON.stringify(LY)); } catch (e) {} };
+const S = { v: 1000, y: YMAX, mode: "upto", size: "deaths", gs: new Set(GNAME.map((g, i) => i)), sel: null, tour: null, play: null };
+let RU = null;           // runups, loaded after the page
+const halfWin = () => Math.max(1, Math.round((yearAt(Math.min(1000, S.v + 18)) - yearAt(Math.max(0, S.v - 18))) / 2));
+const inTime = y => S.mode === "upto" ? y <= S.y : Math.abs(y - S.y) <= halfWin();
+const shown = e => S.gs.has(e.g) && inTime(e.year);
+function timeFilter() { return S.mode === "upto" ? ["<=", ["get", "y"], S.y] : ["all", [">=", ["get", "y"], S.y - halfWin()], ["<=", ["get", "y"], S.y + halfWin()]]; }
+function groupFilter() { return ["in", ["get", "g"], ["literal", [...S.gs]]]; }
+
+/* ---------- map ---------- */
+let map = null, mapOK = false, popup = null;
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+const HOME = () => small() ? { center: [165, 12], zoom: 0 } : { center: [155, 14], zoom: .78 };
+function radiusExpr() {
+  const base = S.size === "deaths" ? ["case", [">", ["get", "d"], 0], ["+", 2.6, ["*", .075, ["sqrt", ["get", "d"]]]], 2.2]
+                                   : ["case", [">", ["get", "h"], 0], ["+", 2.0, ["*", 1.15, ["sqrt", ["get", "h"]]]], 1.8];
+  return ["interpolate", ["linear"], ["zoom"], 0, ["*", .8 * LY.size, base], 3, ["*", 1.15 * LY.size, base], 7, ["*", 2 * LY.size, base]];
+}
+const gColor = () => ["match", ["get", "g"], ...GC.flatMap((c, i) => [i, c]), "#999"];
+const hColor = () => ["match", ["get", "c"], ...HB.flatMap((b, k) => [k, HCOL(k)]), HCOL(-1)];
+function evGeo() {
+  return { type: "FeatureCollection", features: EV.filter(e => e.lat != null).map(e => ({ type: "Feature", id: e.i,
+    properties: { i: e.i, g: e.g, y: e.year, d: e.deaths || 0, h: e.maxht || e.maxrun || 0, k: -(S.size === "deaths" ? (e.deaths || 0) : (e.maxht || e.maxrun || 0)) },
+    geometry: { type: "Point", coordinates: [e.lon, e.lat] } })) };
+}
+function runGeo() {
+  if (!RU) return { type: "FeatureCollection", features: [] };
+  return { type: "FeatureCollection", features: RU.rows.map((r, j) => { const e = EV[r[0]]; return { type: "Feature", properties: { j, e: r[0], g: e.g, y: e.year, c: hbin(r[3]) }, geometry: { type: "Point", coordinates: [r[2], r[1]] } }; }) };
+}
+const unwrap = (lon, ref) => { let x = lon; while (x - ref > 180) x -= 360; while (x - ref < -180) x += 360; return x; };
+function splitLine(a, b) {   // a straight join from a to b (b's longitude unwrapped near a's), cut at the antimeridian so each part stays in -180..180
+  const parts = []; let [x0, y0] = a, [x1, y1] = b;
+  const k = x => Math.floor((x + 180) / 360);
+  if (k(x0) === k(x1)) { const s = 360 * k(x0); return [[[x0 - s, y0], [x1 - s, y1]]]; }
+  const edge = x1 > x0 ? 360 * k(x0) + 180 : 360 * k(x0) - 180, t = (edge - x0) / (x1 - x0), ym = y0 + t * (y1 - y0), s0 = 360 * k(x0);
+  parts.push([[x0 - s0, y0], [edge - s0 + (x1 > x0 ? -1e-6 : 1e-6), ym]]);
+  const s1 = 360 * k(x1); parts.push([[edge - s1 + (x1 > x0 ? 1e-6 : -1e-6), ym], [x1 - s1, y1]]);
+  return parts;
+}
+function selGeo() {
+  const L = { type: "FeatureCollection", features: [] }, P = { type: "FeatureCollection", features: [] };
+  if (S.sel == null || !RU) return [L, P];
+  const e = EV[S.sel];
+  RU.rows.forEach((r, j) => { if (r[0] !== S.sel) return; const c = hbin(r[3]);
+    if (e.lat != null) L.features.push({ type: "Feature", properties: { c }, geometry: { type: "MultiLineString", coordinates: splitLine([e.lon, e.lat], [unwrap(r[2], e.lon), r[1]]) } });
+    P.features.push({ type: "Feature", properties: { j, c }, geometry: { type: "Point", coordinates: [r[2], r[1]] } }); });
+  return [L, P];
+}
+function initMap() {
+  const box = document.getElementById("map");
+  if (!window.maplibregl) { box.insertAdjacentHTML("beforeend", '<div class="mapfail">The interactive map could not load here (it needs the MapLibre library from cdn.jsdelivr.net). The charts, the tour text and the tables below still work.</div>'); return; }
+  try {
+    map = new maplibregl.Map({ container: "map", ...HOME(), minZoom: 0, maxZoom: 11, attributionControl: false, dragRotate: false, pitchWithRotate: false, renderWorldCopies: true,
+      style: { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": css("--sea") } }] } });
+  } catch (e) { box.insertAdjacentHTML("beforeend", '<div class="mapfail">This browser could not start the interactive map (it needs WebGL). The charts, the tour text and the tables below still work.</div>'); return; }
+  map.touchZoomRotate.disableRotation();
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+  map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution: 'Data: NOAA NCEI Global Historical Tsunami Database · Natural Earth · PB2002 (Bird 2003)' }), "bottom-left");
+  map.on("error", () => { /* offline tiles: the plain base map still works */ });
+  map.on("load", () => {
+    mapOK = true;
+    const at = document.querySelector(".maplibregl-ctrl-attrib.maplibregl-compact"); if (at) { at.classList.remove("maplibregl-compact-show"); at.removeAttribute("open"); }
+    map.addSource("world", { type: "geojson", data: WORLD });
+    map.addSource("plates", { type: "geojson", data: PLATES });
+    map.addSource("bathy", { type: "raster", tiles: [ESRI + "Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 13, attribution: "Sea floor &copy; Esri, GEBCO, NOAA, National Geographic, DeLorme, HERE, Geonames.org and other contributors" });
+    map.addSource("ev", { type: "geojson", data: evGeo() });
+    map.addSource("runs", { type: "geojson", data: runGeo() });
+    map.addSource("lines", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    map.addSource("selp", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    map.addLayer({ id: "bathy", type: "raster", source: "bathy", layout: { visibility: "none" }, paint: { "raster-opacity": .7 } });
+    map.addLayer({ id: "land", type: "fill", source: "world", paint: { "fill-color": css("--land") } });
+    map.addLayer({ id: "borders", type: "line", source: "world", paint: { "line-color": css("--coast"), "line-width": ["interpolate", ["linear"], ["zoom"], 0, .3, 5, .9] } });
+    map.addLayer({ id: "plates", type: "line", source: "plates", paint: { "line-color": css("--plate"), "line-width": ["interpolate", ["linear"], ["zoom"], 0, .6, 5, 1.4], "line-opacity": .55, "line-dasharray": [3, 2] } });
+    map.addLayer({ id: "runs", type: "circle", source: "runs", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 1.1, 3, 1.8, 7, 3.4], "circle-color": hColor(), "circle-opacity": .6 } });
+    map.addLayer({ id: "lines", type: "line", source: "lines", layout: { "line-cap": "round" }, paint: { "line-color": hColor(), "line-width": 1, "line-opacity": .5 } });
+    map.addLayer({ id: "ev", type: "circle", source: "ev", layout: { "circle-sort-key": ["get", "k"] }, paint: { "circle-radius": radiusExpr(), "circle-color": gColor(), "circle-opacity": .8,
+      "circle-stroke-color": isDark() ? "#11151B" : "#FFFFFF", "circle-stroke-width": .8 } });
+    map.addLayer({ id: "selp", type: "circle", source: "selp", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 2.4, 4, 3.6, 8, 6], "circle-color": hColor(), "circle-stroke-color": isDark() ? "#11151B" : "#fff", "circle-stroke-width": .8 } });
+    map.addLayer({ id: "evsel", type: "circle", source: "ev", filter: ["==", ["get", "i"], -1], paint: { "circle-radius": radiusExpr(), "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": isDark() ? "#fff" : "#111", "circle-stroke-width": 2.4 } });
+    applyLayers(); filters(); placeNames();
+    map.on("mousemove", e => {
+      const f = map.queryRenderedFeatures(e.point, { layers: ["selp", "ev", "runs"].filter(l => map.getLayer(l) && map.getLayoutProperty(l, "visibility") !== "none") })[0];
+      map.getCanvas().style.cursor = f ? "pointer" : ""; if (!f) return hideTip();
+      const r = map.getContainer().getBoundingClientRect();
+      if (f.layer.id === "ev") { const ev = EV[f.properties.i]; showTip(`<b>${esc(evName(ev))}</b><br>${esc(when(ev))} · ${esc(SITE.causes[ev.cause])}${ev.deaths ? `<br>${fmt(ev.deaths)} deaths` : ""}${ev.maxht ? ` · up to ${f1(ev.maxht)} m` : ""}`, r.left + e.point.x, r.top + e.point.y); }
+      else { const rr = RU.rows[f.properties.j]; showTip(`<b>${esc(rr[6])}</b>, ${esc(RU.countries[rr[7]])}<br>${rr[3] != null ? f1(rr[3]) + " m" : "height not recorded"}${rr[4] != null ? ` · ${fmt(rr[4])} km from the source` : ""}<br>${esc(evName(EV[rr[0]]))}, ${yname(EV[rr[0]].year)}`, r.left + e.point.x, r.top + e.point.y); }
+    });
+    map.on("mouseout", hideTip);
+    map.on("click", e => {
+      const f = map.queryRenderedFeatures(e.point, { layers: ["selp", "ev", "runs"].filter(l => map.getLayer(l) && map.getLayoutProperty(l, "visibility") !== "none") })[0];
+      hideTip(); if (!f) return;
+      if (f.layer.id === "ev") pick(f.properties.i, { fly: false, popup: true });
+      else runPopup(f.properties.j, e.lngLat);
+    });
+    map.on("moveend", placeNames);
+    if (S.sel != null) pick(S.sel, { fly: true, popup: false });
+  });
+  layerControl();
+}
+function popupHtml(e) {
+  const rows = [["When", when(e)], ["Cause", SITE.causes[e.cause]], ["NCEI rating", e.validity === 4 ? "definite" : "probable"]];
+  if (e.mag != null) rows.push(["Magnitude", f1(e.mag)]);
+  if (e.maxht != null) rows.push(["Highest water", f1(e.maxht) + " m"]);
+  rows.push(["Tsunami deaths", e.deaths ? fmt(e.deaths) : "none recorded"]);
+  if (e.deaths_total && e.deaths_total !== e.deaths) rows.push(["Whole event", fmt(e.deaths_total) + " deaths, with the " + (e.cause >= 4 && e.cause <= 7 ? "eruption" : "earthquake")]);
+  rows.push(["Places", e.nrun ? `${fmt(e.nrun)} in ${e.ncty} ${e.ncty === 1 ? "country" : "countries"}` : "none with a position"]);
+  if (e.maxdist) rows.push(["Farthest", fmt(e.maxdist) + " km"]);
+  return `<b class="t">${esc(evName(e))}</b><table>${rows.map(r => `<tr><td>${r[0]}</td><td>${esc(r[1])}</td></tr>`).join("")}</table><small>NCEI tsunami event ${e.id}</small>`;
+}
+function runPopup(j, ll) {
+  if (!mapOK) return; const r = RU.rows[j], e = EV[r[0]];
+  if (popup) popup.remove();
+  popup = new maplibregl.Popup({ offset: 8, maxWidth: "290px" }).setLngLat(ll || [r[2], r[1]]).setHTML(`<b class="t">${esc(r[6])}</b><div class="al">${esc(RU.countries[r[7]])}</div><table>
+<tr><td>Water</td><td>${r[3] != null ? f1(r[3]) + " m" : "not recorded"}</td></tr>${r[4] != null ? `<tr><td>From source</td><td>${fmt(r[4])} km</td></tr>` : ""}${r[5] != null ? `<tr><td>Arrived after</td><td>${Math.floor(r[5])} h ${Math.round((r[5] % 1) * 60)} min</td></tr>` : ""}${r[8] ? `<tr><td>Deaths here</td><td>${fmt(r[8])}</td></tr>` : ""}
+<tr><td>Tsunami</td><td><span class="go" data-e="${r[0]}">${esc(evName(e))}, ${esc(yname(e.year))}</span></td></tr></table>`).addTo(map);
+  const g = popup.getElement().querySelector("[data-e]"); if (g) g.onclick = () => pick(+g.dataset.e, { fly: true, popup: true });
+}
+function filters() {
+  if (!mapOK) return;
+  const f = ["all", groupFilter(), timeFilter()];
+  map.setFilter("ev", f); map.setFilter("runs", f);
+  map.setFilter("evsel", ["==", ["get", "i"], S.sel == null ? -1 : S.sel]);
+  map.setPaintProperty("runs", "circle-opacity", S.sel == null ? .6 : .14);
+}
+function drawSel() {
+  if (!mapOK) return; const [L, P] = selGeo();
+  map.getSource("lines").setData(L); map.getSource("selp").setData(P); filters();
+}
+function applyLayers() {
+  if (!mapOK) return;
+  const vis = (id, on) => map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+  vis("bathy", LY.bathy); map.setPaintProperty("bathy", "raster-opacity", Math.min(1, .15 + LY.bathyK / 110));
+  vis("plates", LY.plates); vis("borders", LY.borders); vis("runs", LY.runs); vis("lines", LY.lines);
+  map.setPaintProperty("land", "fill-opacity", LY.bathy ? .55 : 1);
+  ["ev", "evsel"].forEach(id => map.setPaintProperty(id, "circle-radius", radiusExpr()));
+  placeNames();
+}
+let nameMarkers = [];
+function placeNames() {
+  nameMarkers.forEach(m => m.remove()); nameMarkers = [];
+  if (!mapOK) return;
+  const z = map.getZoom(), b = map.getBounds(), bxs = [];
+  const put = (lon, lat, html, cls, w, hgt, anchor = "center") => {
+    let x = lon; const c = map.getCenter().lng; while (x - c > 180) x -= 360; while (x - c < -180) x += 360;
+    if (!b.contains([x, lat])) return false; const pt = map.project([x, lat]);
+    const bx = anchor === "left" ? [pt.x - 4, pt.y - hgt / 2, pt.x + w, pt.y + hgt / 2] : [pt.x - w / 2, pt.y - hgt / 2, pt.x + w / 2, pt.y + hgt / 2];
+    if (bxs.some(o => bx[0] < o[2] && bx[2] > o[0] && bx[1] < o[3] && bx[3] > o[1])) return false; bxs.push(bx);
+    const d = document.createElement("div"); d.className = cls; d.innerHTML = html; nameMarkers.push(new maplibregl.Marker({ element: d, anchor }).setLngLat([x, lat]).addTo(map)); return true;
+  };
+  if (LY.onames) OCN.forEach(o => { if (o.rank === 2 && z < 2.6) return; put(o.lon, o.lat, esc(o.name), "ocL" + (o.rank === 2 ? " s" : ""), o.name.length * (o.rank === 1 ? 10.5 : 7.4), 16); });
+  if (LY.cnames && z >= 1.6) { const minPop = z < 2.6 ? 6e7 : z < 3.6 ? 1.5e7 : z < 4.6 ? 3e6 : 0; let n = 0;
+    Object.entries(CMETA).sort((a, c) => c[1].pop - a[1].pop).forEach(([iso, m]) => { if (m.pop < minPop || n > 60) return; if (put(m.lx, m.ly, esc(m.name), "cntL", m.name.length * 7.4, 13)) n++; }); }
+  if (LY.cities && z >= 2.5) { const minPop = z < 3.5 ? 5e6 : z < 4.5 ? 1.5e6 : z < 6 ? 5e5 : 0; let n = 0;
+    for (const c of CITIES) { if (c.pop < minPop) continue; if (put(c.lon, c.lat, `<i></i>${esc(c.name)}`, "cityL", 10 + c.name.length * 6.6, 14, "left")) n++; if (n > 40) break; } }
+}
+function layerControl() {
+  class Ctl { onAdd() { const d = document.createElement("div"); d.className = "maplibregl-ctrl lyr";
+    d.innerHTML = `<button class="lyrBtn" aria-expanded="false">Map layers</button>
+<div class="lyrPanel" hidden>
+ <div class="row"><label><input type="checkbox" data-k="bathy"> Sea floor (depth)</label><div class="sub"><span>strength</span><input type="range" data-k="bathyK" min="10" max="100" step="5" aria-label="Sea floor strength"></div></div>
+ <div class="row"><label><input type="checkbox" data-k="plates"> Plate boundaries</label></div>
+ <div class="row"><label><input type="checkbox" data-k="borders"> Borders and coasts</label></div>
+ <div class="row"><label><input type="checkbox" data-k="onames"> Ocean names</label></div>
+ <div class="row"><label><input type="checkbox" data-k="cnames"> Country names</label></div>
+ <div class="row"><label><input type="checkbox" data-k="cities"> City names</label></div>
+ <div class="hd">Tsunamis</div>
+ <div class="row"><label><input type="checkbox" data-k="runs"> Places the water reached</label></div>
+ <div class="row"><label><input type="checkbox" data-k="lines"> Lines from a chosen source</label></div>
+ <div class="row"><label style="font-weight:400">Source circle size</label><div class="sub"><input type="range" data-k="size" min=".5" max="2" step=".1" aria-label="Source circle size"></div></div>
+ <p class="sub" style="margin:4px 0 8px">The sea floor is an online layer; without it the plain map still works.</p>
+ <button class="reset">Reset layers</button>
+</div>`;
+    ["click", "dblclick", "mousedown", "touchstart", "wheel"].forEach(t => d.addEventListener(t, e => e.stopPropagation(), { passive: t !== "click" }));
+    const btn = d.querySelector(".lyrBtn"), pan = d.querySelector(".lyrPanel");
+    btn.onclick = () => { const o = pan.hidden; pan.hidden = !o; btn.setAttribute("aria-expanded", o); };
+    const sync = () => pan.querySelectorAll("[data-k]").forEach(i => { const k = i.dataset.k; if (i.type === "checkbox") i.checked = LY[k]; else i.value = LY[k]; });
+    pan.querySelectorAll("[data-k]").forEach(i => i.addEventListener(i.type === "range" ? "input" : "change", () => { const k = i.dataset.k; LY[k] = i.type === "checkbox" ? i.checked : +i.value; if (k === "bathyK") LY.bathy = true; sync(); saveLY(); applyLayers(); legend(); }));
+    pan.querySelector(".reset").onclick = () => { Object.assign(LY, LYDEF); saveLY(); sync(); applyLayers(); legend(); };
+    sync(); return d; } onRemove() {} }
+  map.addControl(new Ctl(), "top-left");
+}
+function retheme() {
+  if (!mapOK) return;
+  map.setPaintProperty("bg", "background-color", css("--sea")); map.setPaintProperty("land", "fill-color", css("--land"));
+  map.setPaintProperty("borders", "line-color", css("--coast")); map.setPaintProperty("plates", "line-color", css("--plate"));
+  ["runs", "lines"].forEach(id => map.setPaintProperty(id, id === "lines" ? "line-color" : "circle-color", hColor())); map.setPaintProperty("selp", "circle-color", hColor());
+  map.setPaintProperty("ev", "circle-stroke-color", isDark() ? "#11151B" : "#FFFFFF"); map.setPaintProperty("evsel", "circle-stroke-color", isDark() ? "#fff" : "#111");
+}
+
+/* ---------- picking an event ---------- */
+function flyTo(e) {
+  if (!mapOK || e.lat == null) return;
+  const pts = RU ? RU.rows.filter(r => r[0] === e.i).map(r => [unwrap(r[2], e.lon), r[1]]) : [];
+  pts.push([e.lon, e.lat]);
+  let x0 = Math.min(...pts.map(p => p[0])), x1 = Math.max(...pts.map(p => p[0])), y0 = Math.min(...pts.map(p => p[1])), y1 = Math.max(...pts.map(p => p[1]));
+  if (x1 - x0 < 1.5) { x0 -= 2; x1 += 2; } if (y1 - y0 < 1.5) { y0 -= 2; y1 += 2; }
+  y0 = Math.max(-72, y0); y1 = Math.min(78, y1);
+  const mer = l => Math.log(Math.tan(Math.PI / 4 + l * Math.PI / 360)), imer = m => (2 * Math.atan(Math.exp(m)) - Math.PI / 2) * 180 / Math.PI;
+  const box = map.getContainer(), W = box.clientWidth, H = box.clientHeight, pad = small() ? 22 : 44;
+  const zx = Math.log2((W - 2 * pad) * 360 / (Math.max(2, x1 - x0) * 512)), zy = Math.log2((H - 2 * pad) * 2 * Math.PI / (Math.max(.05, mer(y1) - mer(y0)) * 512));
+  const z = Math.max(0, Math.min(7, zx, zy)), cx = (x0 + x1) / 2, cy = imer((mer(y0) + mer(y1)) / 2);
+  map.flyTo({ center: [((cx + 540) % 360) - 180, cy], zoom: z, speed: 1.4 });
+}
+function toMap() { if (small()) document.getElementById("map").scrollIntoView({ behavior: "smooth", block: "start" }); }
+function pick(i, o = {}) {
+  const e = EV[i]; S.sel = i;
+  if (!S.gs.has(e.g)) setGroups(new Set(GNAME.map((g, k) => k)));
+  if (!inTime(e.year)) setV(valAt(e.year), false, e.year);
+  drawSel(); side();
+  if (o.fly) { flyTo(e); toMap(); }
+  if (o.popup && mapOK && e.lat != null) { if (popup) popup.remove(); popup = new maplibregl.Popup({ offset: 10, maxWidth: "300px" }).setLngLat([e.lon, e.lat]).setHTML(popupHtml(e)).addTo(map); }
+}
+function unpick() { S.sel = null; S.tour = null; if (popup) popup.remove(); drawSel(); side(); pressTour(); }
+
+/* ---------- controls ---------- */
+const yr = document.getElementById("yr");
+function setV(v, keep, yExact) {
+  S.v = Math.max(0, Math.min(1000, v)); S.y = yExact != null ? yExact : yearAt(S.v); yr.value = Math.round(S.v);
+  document.getElementById("yv").textContent = yname(S.y);
+  document.getElementById("ylab").textContent = S.mode === "upto" ? (S.v >= 1000 ? "everything to here" : "everything up to then") : `within ${halfWin()} year${halfWin() === 1 ? "" : "s"}`;
+  filters(); if (!keep) side(); legend();
+}
+yr.addEventListener("input", () => { stop(); setV(+yr.value); });
+function stop() { if (S.play) { clearInterval(S.play); S.play = null; document.getElementById("play").innerHTML = "&#9654;"; } }
+const press = (row, b) => document.querySelectorAll(row + " .btn").forEach(x => x.setAttribute("aria-pressed", x === b));
+function setMode(m) { S.mode = m; press("#modeRow", document.querySelector(`#modeRow [data-m="${m}"]`)); setV(S.v); }
+document.querySelectorAll("#modeRow .btn").forEach(b => b.onclick = () => { stop(); setMode(b.dataset.m); });
+document.querySelectorAll("#sizeRow .btn").forEach(b => b.onclick = () => { S.size = b.dataset.s; press("#sizeRow", b); if (mapOK) { map.getSource("ev").setData(evGeo()); applyLayers(); } legend(); });
+document.getElementById("play").onclick = () => {
+  if (S.play) return stop();
+  if (S.v >= 1000) setV(0);
+  document.getElementById("play").innerHTML = "&#10074;&#10074;";
+  S.play = setInterval(() => { if (S.v >= 1000) return stop(); setV(S.v + 5, true); if (Math.round(S.v) % 25 === 0) side(); }, 140);
+};
+function setGroups(set) { S.gs = set; syncGroups(); }
+let syncGroups = () => {};
+(function causeRow() {
+  const row = document.getElementById("causeRow");
+  const all = document.createElement("button"); all.className = "btn"; all.textContent = "All"; all.setAttribute("aria-pressed", "true"); row.appendChild(all);
+  const bs = GROUPS.map(([n, c], i) => { const b = document.createElement("button"); b.className = "btn"; b.innerHTML = `<i style="background:${c}"></i>${esc(n)}`; b.setAttribute("aria-pressed", "false"); b.dataset.g = i; row.appendChild(b); return b; });
+  syncGroups = () => { const allOn = S.gs.size === GNAME.length; all.setAttribute("aria-pressed", allOn); bs.forEach(b => b.setAttribute("aria-pressed", !allOn && S.gs.has(+b.dataset.g))); filters(); side(); legend(); };
+  all.onclick = () => setGroups(new Set(GNAME.map((g, i) => i)));
+  bs.forEach(b => b.onclick = () => { const g = +b.dataset.g; let s = new Set(S.gs); if (s.size === GNAME.length) s = new Set([g]); else if (s.has(g)) { s.delete(g); if (!s.size) s = new Set(GNAME.map((x, i) => i)); } else s.add(g); setGroups(s); });
+})();
+const TOUR = SITE.famous_order, TEXT = {};
+document.querySelectorAll("#tourText [data-k]").forEach(d => TEXT[d.dataset.k] = d.innerHTML);
+function pressTour() { document.querySelectorAll("#tourRow .btn").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === S.tour)); }
+function tour(k) { stop(); S.tour = k; pressTour(); const i = SITE.famous[k]; if (S.mode === "near") setMode("upto"); setV(valAt(EV[i].year), true, EV[i].year); pick(i, { fly: true, popup: false }); }
+(function tourRow() {
+  const row = document.getElementById("tourRow");
+  TOUR.forEach(k => { const f = R.famous[k], b = document.createElement("button"); b.className = "btn"; b.dataset.k = k; b.setAttribute("aria-pressed", "false"); b.textContent = `${f.label} ${f.yname}`; b.onclick = () => tour(k); row.appendChild(b); });
+})();
+function legend() {
+  const e = document.getElementById("legend");
+  let h = GROUPS.map(([n, c], i) => S.gs.has(i) ? `<span><i style="background:${c}"></i>${esc(n)}</span>` : "").join("");
+  h += `<span>circle area: ${S.size === "deaths" ? "tsunami deaths (small: none recorded)" : "highest water"}</span>`;
+  if (LY.runs || S.sel != null) h += `<span class="k">water height:</span>` + HL.map((l, k) => `<span><i class="dot" style="background:${HCOL(k)}"></i>${l}</span>`).join("");
+  if (LY.plates) h += `<span><i class="sq" style="height:3px;width:16px;border:0;background:${css("--plate")}"></i>plate boundary</span>`;
+  e.innerHTML = h;
+}
+function note(h) { document.getElementById("mapnote").innerHTML = h || ""; }
+const dot = c => `<i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${c};margin-right:6px"></i>`;
+function side() {
+  const box = document.getElementById("side"); let h = "";
+  if (S.sel != null) {
+    const e = EV[S.sel], k = S.tour;
+    h = `<button class="back">Back to the overview</button>`;
+    if (k) { const j = TOUR.indexOf(k); h += `<h4>Famous waves · ${j + 1} of ${TOUR.length}</h4>`; }
+    else h += `<h4>Tsunami</h4>`;
+    h += `<div class="big">${esc(k ? R.famous[k].label : e.place)}</div><p class="sub">${esc(when(e))} · ${esc(e.country)} · ${dot(GC[e.g])}${esc(SITE.causes[e.cause])}</p>`;
+    if (k) h += `<p class="story">${TEXT[k]}</p><div class="nav"><button class="btn" data-n="-1">Previous</button><button class="btn" data-n="1">Next wave</button></div>`;
+    h += `<table>${e.mag != null ? `<tr><td>Magnitude</td><td class="num">${f1(e.mag)}</td></tr>` : ""}${e.maxht != null ? `<tr><td>Highest water (NCEI)</td><td class="num">${f1(e.maxht)} m</td></tr>` : ""}
+<tr><td>Tsunami deaths</td><td class="num">${e.deaths ? fmt(e.deaths) : "none recorded"}</td></tr>${e.deaths_total && e.deaths_total !== e.deaths ? `<tr><td>Whole event, with the ${e.cause >= 4 && e.cause <= 7 ? "eruption" : "earthquake"}</td><td class="num">${fmt(e.deaths_total)}</td></tr>` : ""}
+<tr><td>Places with a position</td><td class="num">${fmt(e.nrun)}</td></tr><tr><td>Countries</td><td class="num">${fmt(e.ncty)}</td></tr>${e.maxdist ? `<tr><td>Farthest place</td><td class="num">${fmt(e.maxdist)} km</td></tr>` : ""}</table>`;
+    if (RU) { const rs = RU.rows.filter(r => r[0] === S.sel);
+      const top = rs.filter(r => r[3] != null).sort((a, b) => b[3] - a[3]).slice(0, 6), far = rs.filter(r => r[4] != null && (r[3] || 0) > 0).sort((a, b) => b[4] - a[4]).slice(0, 4);
+      if (top.length) h += `<h4>Highest water</h4><ol>${top.map(r => `<li><span class="go" data-j="${RU.rows.indexOf(r)}">${esc(r[6])}</span> <small>${f1(r[3])} m, ${esc(RU.countries[r[7]])}</small></li>`).join("")}</ol>`;
+      if (far.length && far[0][4] > 500) h += `<h4>Farthest</h4><ol>${far.map(r => `<li><span class="go" data-j="${RU.rows.indexOf(r)}">${esc(r[6])}</span> <small>${fmt(r[4])} km${r[5] != null ? `, after ${f1(r[5])} h` : ""}</small></li>`).join("")}</ol>`; }
+    else h += `<p class="sub">Loading the places...</p>`;
+    if (e.lat == null) h += `<p class="sub">NCEI gives no position for this source, so it is not on the map.</p>`;
+    note(`<b>${esc(evName(e))}</b>, ${esc(yname(e.year))}: lines join the source to every place the water was recorded, coloured by height.`);
+  } else {
+    const vis = EV.filter(shown), byG = GNAME.map(() => 0); let d = 0; vis.forEach(e => { byG[e.g]++; d += e.deaths || 0; });
+    h = `<h4>On the map now</h4><div class="big">${fmt(vis.length)}</div><p class="sub">tsunamis, ${S.mode === "upto" ? `${yname(YMIN)} to ${yname(S.y)}` : `${yname(S.y - halfWin())} to ${yname(Math.min(YMAX, S.y + halfWin()))}`}${d ? `, ${fmt(d)} recorded deaths` : ""}</p><table>` +
+      GROUPS.map(([n, c], k) => byG[k] ? `<tr><td>${dot(c)}${esc(n)}</td><td class="num">${fmt(byG[k])}</td></tr>` : "").join("") + `</table>`;
+    const dead = vis.filter(e => e.deaths).sort((a, b) => b.deaths - a.deaths).slice(0, 7);
+    if (dead.length) h += `<h4>Deadliest in view</h4><ol>${dead.map(e => `<li><span class="go" data-i="${e.i}">${esc(e.place)}</span> <small>${esc(yname(e.year))}, ${fmt(e.deaths)}</small></li>`).join("")}</ol>`;
+    h += `<h4>Famous waves</h4><ul>${TOUR.map(k => `<li><span class="go" data-k="${k}">${esc(R.famous[k].label)}</span> <small>${esc(R.famous[k].yname)}</small></li>`).join("")}</ul>`;
+    h += `<p class="sub">Press play, drag the time line, or click a source. Map layers turns on the sea floor and city names.</p>`;
+    note("");
+  }
+  box.innerHTML = h;
+  const b = box.querySelector(".back"); if (b) b.onclick = unpick;
+  box.querySelectorAll("[data-i]").forEach(x => x.onclick = () => { S.tour = null; pressTour(); pick(+x.dataset.i, { fly: true, popup: true }); });
+  box.querySelectorAll("[data-k]").forEach(x => x.onclick = () => tour(x.dataset.k));
+  box.querySelectorAll("[data-j]").forEach(x => x.onclick = () => { const r = RU.rows[+x.dataset.j]; if (mapOK) { map.flyTo({ center: [r[2], r[1]], zoom: Math.max(map.getZoom(), 5) }); runPopup(+x.dataset.j, [r[2], r[1]]); toMap(); } });
+  box.querySelectorAll("[data-n]").forEach(x => x.onclick = () => { const j = (TOUR.indexOf(S.tour) + +x.dataset.n + TOUR.length) % TOUR.length; tour(TOUR[j]); });
+}
+
+/* ---------- search: places, countries, years ---------- */
+(function search() {
+  const inp = document.getElementById("q"), sug = document.getElementById("sug"); let opts = [], k = -1;
+  const norm = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const ALIAS = { santorini: "thera", thera: "thera", lisbon: "lisbon", krakatoa: "krakatau", krakatau: "krakatau", tohoku: "tohoku", fukushima: "tohoku", "boxing day": "sumatra", "indian ocean": "sumatra", "hunga tonga": "tonga", tonga: "tonga", lituya: "lituya", cascadia: "cascadia" };
+  function build(q) {
+    const nq = norm(q).trim(); if (nq.length < 2) return [];
+    const words = nq.split(/\s+/), yrs = words.filter(w => /^-?\d{2,4}$/.test(w)).map(Number), txt = words.filter(w => !/^-?\d{2,4}$/.test(w));
+    const out = [];
+    Object.entries(ALIAS).forEach(([a, f]) => { if (a.startsWith(nq) || nq.startsWith(a)) out.push({ t: "f", k: f, s: 20 }); });
+    EV.forEach(e => { const n = norm(e.place + " " + e.country); let s = 0;
+      if (yrs.length && !yrs.includes(e.year)) return; if (txt.length && !txt.every(w => n.includes(w))) return; if (!yrs.length && !txt.length) return;
+      s = 2 + Math.log10(1 + (e.deaths || 0)) + Math.log10(1 + e.nrun) + (txt.length && norm(e.place).startsWith(txt[0]) ? 3 : 0); out.push({ t: "e", i: e.i, s }); });
+    const seen = new Set(); return out.sort((a, b) => b.s - a.s).filter(o => { const key = o.t === "f" ? "f" + o.k : "e" + o.i; if (seen.has(key)) return false; seen.add(key); return true; }).slice(0, 10);
+  }
+  const lab = o => { if (o.t === "f") { const f = R.famous[o.k]; return `${esc(f.label)} ${esc(f.yname)} <span>famous wave</span>`; } const e = EV[o.i]; return `${esc(e.place)} <span>${esc(yname(e.year))}, ${esc(e.country)}${e.deaths ? ", " + fmt(e.deaths) + " deaths" : ""}</span>`; };
+  const show = () => { sug.innerHTML = opts.map((o, i) => `<li role="option" aria-selected="${i === k}" data-i="${i}">${lab(o)}</li>`).join(""); sug.style.display = opts.length ? "block" : "none"; };
+  const choose = o => { sug.style.display = "none"; inp.blur(); if (o.t === "f") tour(o.k); else { S.tour = null; pressTour(); pick(o.i, { fly: true, popup: true }); } };
+  inp.addEventListener("input", () => { opts = build(inp.value); k = -1; show(); });
+  inp.addEventListener("keydown", e => { if (e.key === "ArrowDown") { k = Math.min(opts.length - 1, k + 1); show(); e.preventDefault(); } else if (e.key === "ArrowUp") { k = Math.max(0, k - 1); show(); e.preventDefault(); } else if (e.key === "Enter" && opts.length) { choose(opts[Math.max(0, k)]); } else if (e.key === "Escape") { sug.style.display = "none"; } });
+  sug.addEventListener("click", e => { const li = e.target.closest("li"); if (li) choose(opts[+li.dataset.i]); });
+  document.addEventListener("click", e => { if (!e.target.closest(".searchbox")) sug.style.display = "none"; });
+})();
+
+/* ---------- charts ---------- */
+function goEvent(id) { const i = EV.findIndex(e => e.id === id); if (i < 0) return; document.getElementById("atlas").scrollIntoView({ behavior: "smooth" }); setTimeout(() => { S.tour = null; pressTour(); pick(i, { fly: true, popup: true }); }, 350); }
+function pairChart(id, rows, nameOf, colOf, aria) {
+  resp(document.getElementById(id), (w, sm) => {
+    const rh = 26, lw = sm ? 128 : 190, gap = 20, h = rows.length * rh + 30, svg = el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img", "aria-label": aria }, document.getElementById(id));
+    const pw = (w - lw - gap) / 2, xA = lw, xB = lw + pw + gap, mx = Math.max(...rows.map(r => Math.max(r.pct, r.deaths_pct || 0)));
+    lbl(svg, xA, 12, "share of tsunamis", "lab s m"); lbl(svg, xB, 12, "share of deaths", "lab s m");
+    rows.forEach((r, i) => { const y = 22 + i * rh, c = colOf(r);
+      lbl(svg, lw - 8, y + 15, nameOf(r), "lab", "end");
+      [[xA, r.pct, `${fmt(r.n)} tsunamis`], [xB, r.deaths_pct || 0, `${fmt(r.deaths)} deaths`]].forEach(([x0, v, t]) => {
+        const bw = (pw - 44) * v / mx; el("rect", { x: x0, y: y + 5, width: Math.max(v > 0 ? 1.5 : 0, bw), height: rh - 10, fill: c, rx: 2 }, svg);
+        lbl(svg, x0 + bw + 5, y + 15, v >= 9.5 ? Math.round(v) + "%" : v > 0 ? v.toFixed(1) + "%" : "0", "lab s b"); });
+      const hr = el("rect", { x: 0, y, width: w, height: rh, fill: "transparent" }, svg);
+      hr.addEventListener("mousemove", ev => showTip(`<b>${esc(nameOf(r))}</b><br>${fmt(r.n)} tsunamis (${r.pct.toFixed(1)}%)<br>${fmt(r.deaths)} recorded deaths (${(r.deaths_pct || 0).toFixed(1)}%)`, ev.clientX, ev.clientY)); hr.addEventListener("mouseleave", hideTip); });
+  });
+}
+function causeChart() { pairChart("causeChart", R.causes_list, r => r.group, r => GC[GNAME.indexOf(r.group)], "Bar charts of the share of tsunamis and of tsunami deaths by cause"); }
+function oceanChart() { const OC = { "Pacific": "#173F80", "Indian Ocean": "#3D8BC4", "Atlantic and Caribbean": "#2E9A8C", "Mediterranean": "#D9822B", "Black Sea and Caspian": "#7B57A8", "Red Sea and Persian Gulf": "#A79F94", "Inland Africa": "#A79F94" };
+  pairChart("oceanChart", R.oceans_list.filter(o => o.n > 1), r => r.ocean, r => isDark() && r.ocean === "Pacific" ? "#5F8FD0" : OC[r.ocean], "Bar charts of the share of tsunamis and of tsunami deaths by ocean"); }
+function hbars(id, rows, val, name, sub, col, unit, click, aria, tipf) {
+  resp(document.getElementById(id), (w, sm) => {
+    const rh = 26, lw = sm ? 150 : 250, h = rows.length * rh + 8, svg = el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img", "aria-label": aria }, document.getElementById(id));
+    const mx = Math.max(...rows.map(val));
+    rows.forEach((r, i) => { const y = 4 + i * rh, bw = (w - lw - 70) * val(r) / mx;
+      const t = lbl(svg, lw - 8, y + 12, name(r), "lab", "end"); const s2 = lbl(svg, lw - 8, y + 23, sub(r), "lab s m", "end");
+      if (sm) { t.setAttribute("y", y + 12); }
+      const b = el("rect", { x: lw, y: y + 5, width: Math.max(2, bw), height: rh - 10, fill: col(r), rx: 2 }, svg);
+      lbl(svg, lw + bw + 5, y + 16, unit(r), "lab s b");
+      const hr = el("rect", { x: 0, y, width: w, height: rh, fill: "transparent", style: click ? "cursor:pointer" : "" }, svg);
+      if (click) hr.addEventListener("click", () => click(r));
+      hr.addEventListener("mousemove", ev => showTip(tipf(r), ev.clientX, ev.clientY)); hr.addEventListener("mouseleave", hideTip); });
+  });
+}
+const shortName = s => s.replace(/, (AK|WA|HI|CA)$/, "").replace(/^Off W\. Coast of /, "off ").replace(/ Island$/, "");
+function runupChart() {
+  const rows = R.highest.slice(0, 12);
+  hbars("runupChart", rows, r => r.ht, r => `${shortName(r.place)}`, r => `${r.yname}, ${r.country}`, r => GC[GNAME.indexOf(r.group)], r => f1(r.ht) + " m", r => goEvent(r.id),
+    "Bar chart of the highest runups on record", r => `<b>${esc(r.place)}</b>, ${esc(r.yname)}<br>${f1(r.ht)} m · ${esc(r.group)}<br>source: ${esc(r.event)}`);
+}
+function causeLegend(id) { document.getElementById(id).innerHTML = GROUPS.filter(([n]) => n !== "Unknown" && n !== "Explosion").map(([n, c]) => `<span><i class="sq" style="background:${c}"></i>${esc(n)}</span>`).join(""); }
+function deathChart() {
+  const rows = R.deadliest.slice(0, 12);
+  hbars("deathChart", rows, r => r.deaths, r => shortName(r.place), r => `${r.yname}, ${r.country}`, r => isDark() ? "#E07A70" : "#7A2A2A", r => fmt(r.deaths), r => goEvent(r.id),
+    "Bar chart of the deadliest tsunamis by tsunami deaths", r => `<b>${esc(r.place)}</b>, ${esc(r.yname)}<br>${fmt(r.deaths)} tsunami deaths${r.deaths_total && r.deaths_total !== r.deaths ? `<br>${fmt(r.deaths_total)} in the whole event` : ""}<br>${esc(r.cause)}${r.mag ? ", magnitude " + f1(r.mag) : ""}`);
+}
+function countryChart() {
+  const rows = R.countries.slice(0, 15);
+  hbars("countryChart", rows, r => r.events, r => r.country, r => `${fmt(r.runups)} places`, () => isDark() ? "#6FA8DC" : "#2763A6", r => fmt(r.events), null,
+    "Bar chart of the countries reached by the most tsunamis", r => `<b>${esc(r.country)}</b><br>${fmt(r.events)} tsunamis recorded · ${fmt(r.runups)} place records<br>highest water ${f1(r.max_ht)} m`);
+}
+function centuryChart() {
+  const C = R.centuries.filter(c => c.c >= 0);
+  resp(document.getElementById("centuryChart"), (w, sm) => {
+    const h = sm ? 260 : 320, m = { l: 38, r: 8, t: 18, b: 34 }, svg = el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img", "aria-label": "Stacked bar chart of tsunamis recorded per century by cause" }, document.getElementById("centuryChart"));
+    const mx = 760, bw = (w - m.l - m.r) / C.length, Y = v => (h - m.t - m.b) * v / mx;
+    for (let v = 0; v <= mx; v += 200) { const y = h - m.b - Y(v); el("line", { x1: m.l, x2: w - m.r, y1: y, y2: y, stroke: css("--rule") }, svg); lbl(svg, m.l - 6, y + 4, v, "lab s m", "end"); }
+    C.forEach((c, i) => { let y = h - m.b; const x = m.l + i * bw;
+      GNAME.forEach((g, k) => { const v = c[g]; if (!v) return; const hh = Y(v); y -= hh; el("rect", { x: x + 1.5, y, width: Math.max(1, bw - 3), height: hh, fill: GC[k] }, svg); });
+      if (c.n) lbl(svg, x + bw / 2, y - 4, c.n, "lab s b", "middle");
+      if (!sm || i % 2 === 0 || i === C.length - 1) lbl(svg, x + bw / 2, h - m.b + 14, c.c === 0 ? "1" : String(c.c), "lab s m", "middle");
+      const hr = el("rect", { x, y: m.t, width: bw, height: h - m.t - m.b, fill: "transparent" }, svg);
+      hr.addEventListener("mousemove", ev => showTip(`<b>${esc(c.label)}</b>: ${c.n} tsunamis<br>` + GNAME.map((g, k) => c[g] ? `<span style="color:${GC[k]}">■</span> ${esc(g)} ${c[g]}` : "").filter(Boolean).join("<br>"), ev.clientX, ev.clientY)); hr.addEventListener("mouseleave", hideTip); });
+    lbl(svg, w - m.r, h - 4, "century starting (AD)", "lab s m", "end");
+  });
+}
+function travelChart() {
+  const box = document.getElementById("travelChart");
+  if (!RU) { box.innerHTML = '<p class="fig-sub">The places are still loading.</p>'; return; }
+  const P = RU.rows.filter(r => r[4] != null && r[5] != null && r[4] > 0 && r[5] > 0 && r[4] <= 20000 && r[5] <= 36);
+  const sub = box.parentElement.querySelector(".fig-sub"); if (sub) sub.textContent = `${fmt(P.length)} places with a recorded travel time and distance, coloured by water height. The dashed lines are steady speeds. Hover a dot.`;
+  resp(box, (w, sm) => {
+    const h = sm ? 300 : 400, m = { l: 46, r: 14, t: 14, b: 36 }, svg = el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img", "aria-label": "Scatter chart of distance from the source against travel time for places the water reached" }, box);
+    const X = d => m.l + (w - m.l - m.r) * d / 20000, Y = t => h - m.b - (h - m.t - m.b) * t / 36;
+    for (let d = 0; d <= 20000; d += 5000) { el("line", { x1: X(d), x2: X(d), y1: m.t, y2: h - m.b, stroke: css("--rule") }, svg); lbl(svg, X(d), h - m.b + 14, fmt(d), "lab s m", "middle"); }
+    for (let t = 0; t <= 36; t += 6) { el("line", { x1: m.l, x2: w - m.r, y1: Y(t), y2: Y(t), stroke: css("--rule") }, svg); lbl(svg, m.l - 6, Y(t) + 4, t + " h", "lab s m", "end"); }
+    lbl(svg, w - m.r, h - 4, "km from the source", "lab s m", "end");
+    [[400, "400 km/h"], [700, "700 km/h"]].forEach(([v, s]) => { const t1 = Math.min(36, 20000 / v), d1 = t1 * v; el("line", { x1: X(0), y1: Y(0), x2: X(d1), y2: Y(t1), stroke: css("--muted"), "stroke-dasharray": "5 4", "stroke-width": 1.2 }, svg); lbl(svg, X(d1) - 4, Y(t1) + (v === 400 ? 14 : -6), s, "lab s m", "end"); });
+    const g = el("g", {}, svg);
+    P.forEach(r => { const c = el("circle", { cx: X(r[4]), cy: Y(r[5]), r: sm ? 1.8 : 2.3, fill: HCOL(hbin(r[3])), opacity: .7 }, g);
+      c.addEventListener("mousemove", ev => showTip(`<b>${esc(r[6])}</b>, ${esc(RU.countries[r[7]])}<br>${fmt(r[4])} km in ${f1(r[5])} h (${fmt(r[4] / r[5])} km/h)<br>${r[3] != null ? f1(r[3]) + " m · " : ""}${esc(evName(EV[r[0]]))}, ${yname(EV[r[0]].year)}`, ev.clientX, ev.clientY)); c.addEventListener("mouseleave", hideTip); });
+  });
+}
+function farTable() {
+  const t = document.getElementById("farTable");
+  t.innerHTML = `<thead><tr><th>Tsunami</th><th>Farthest place</th><th class="r">km</th><th class="r">Water</th><th class="r">Hours</th></tr></thead><tbody>` +
+    R.farthest.slice(0, 10).map((r, i) => `<tr data-i="${i}"><td>${esc(r.event)}, ${esc(r.yname)}</td><td>${esc(r.place)}, ${esc(r.rcountry)}</td><td class="r">${fmt(r.dist)}</td><td class="r">${f1(r.ht)} m</td><td class="r">${r.trav != null ? f1(r.trav) : ""}</td></tr>`).join("") + `</tbody>`;
+  t.querySelectorAll("tr[data-i]").forEach(r => r.onclick = () => goEvent(R.farthest[+r.dataset.i].id));
+}
+function charts() { causeLegend("runupLegend"); causeChart(); oceanChart(); runupChart(); deathChart(); countryChart(); centuryChart(); farTable(); travelChart(); }
+
+/* ---------- start ---------- */
+document.getElementById("theme").onclick = () => { const r = document.documentElement; r.dataset.theme = isDark() ? "light" : "dark"; retheme(); legend(); redraws.forEach(f => f()); };
+charts(); setV(1000); legend(); side(); initMap();
+fetch("data/runups.json").then(r => r.json()).then(j => {
+  RU = j; window.RU = j;
+  if (mapOK) { map.getSource("runs").setData(runGeo()); drawSel(); } else if (map) map.once("load", () => { map.getSource("runs").setData(runGeo()); drawSel(); });
+  travelChart(); side();
+}).catch(() => { const b = document.getElementById("travelChart"); b.innerHTML = '<p class="fig-sub">The places could not be loaded (data/runups.json).</p>'; });
+</script>
+/*FULLSCREEN*/
+</body>
+</html>

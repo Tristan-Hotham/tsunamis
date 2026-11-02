@@ -1,0 +1,2758 @@
+{
+ "source": {
+  "events": 3138,
+  "runups": 35129,
+  "n": 1699,
+  "definite": 1110,
+  "probable": 589,
+  "other": 1439,
+  "validity": {
+   "-1": 214,
+   "0": 37,
+   "1": 558,
+   "2": 630,
+   "3": 589,
+   "4": 1110
+  },
+  "first_year": -1610,
+  "last_year": 2026,
+  "first_name": "1610 BC",
+  "fetched": "2026",
+  "ncei_doi": "10.7289/V5PN93H7",
+  "runups_kept": 33532,
+  "runups_coast": 33176,
+  "runups_deep": 356,
+  "runups_doubtful": 1248,
+  "runups_other_src": 1395,
+  "runups_coast_located": 32629,
+  "no_coords": 116,
+  "located": 1583,
+  "with_runups": 1543,
+  "checks": {
+   "events": 3138,
+   "runups": 35129,
+   "events_info": {
+    "totalPages": 16,
+    "totalItems": 3138,
+    "itemsPerPage": 200
+   },
+   "runups_info": {
+    "totalPages": 176,
+    "totalItems": 35129,
+    "itemsPerPage": 200
+   },
+   "validity": {
+    "-1": 214,
+    "0": 37,
+    "1": 558,
+    "2": 630,
+    "3": 589,
+    "4": 1110
+   },
+   "cause": {
+    "0": 334,
+    "1": 2078,
+    "2": 54,
+    "3": 142,
+    "4": 22,
+    "5": 2,
+    "6": 138,
+    "7": 20,
+    "8": 156,
+    "9": 184,
+    "10": 2,
+    "11": 2
+   },
+   "cause_checks": "ok",
+   "met_with_magnitude": 6,
+   "eq_with_magnitude_pct": 75.4,
+   "volcano_id_by_cause": {
+    "0": 0.0,
+    "1": 1.2,
+    "2": 0.0,
+    "3": 2.1,
+    "4": 86.4,
+    "5": 100.0,
+    "6": 88.4,
+    "7": 95.0,
+    "8": 1.3,
+    "9": 0.0,
+    "10": 0.0,
+    "11": 0.0
+   },
+   "region_top_country": {
+    "30": "EGYPT",
+    "40": "UKRAINE",
+    "50": "GREECE",
+    "60": "INDONESIA",
+    "70": "UK TERRITORY",
+    "71": "BRAZIL",
+    "72": "GREENLAND",
+    "73": "UK",
+    "74": "VENEZUELA",
+    "75": "USA",
+    "76": "USA",
+    "77": "SOUTH AFRICA",
+    "78": "CONGO",
+    "80": "USA",
+    "81": "NEW ZEALAND",
+    "82": "PAPUA NEW GUINEA",
+    "83": "INDONESIA",
+    "84": "PHILIPPINES",
+    "85": "JAPAN",
+    "86": "RUSSIA",
+    "87": "USA",
+    "88": "USA",
+    "89": "CHILE"
+   },
+   "deaths_gt_total": 0,
+   "no_coords": 465,
+   "no_coords_valid": 116,
+   "doubtful": {
+    "n": 33639,
+    "a": 786,
+    "m": 411,
+    "y": 293
+   },
+   "runup_types": {
+    "-1": 3,
+    "0": 1,
+    "1": 8572,
+    "2": 9788,
+    "3": 356,
+    "4": 5634,
+    "5": 8977,
+    "6": 13,
+    "7": 167,
+    "8": 54,
+    "9": 39,
+    "10": 1343
+   },
+   "runups_valid_src": 33734,
+   "runups_ok": 33532,
+   "runups_ok_deep": 356,
+   "runups_orphan": 0
+  },
+  "definite_pct": 65.33,
+  "n_pct_all": 54.14,
+  "y2026": 13,
+  "last_month": 10
+ },
+ "causes": {
+  "Earthquake": {
+   "group": "Earthquake",
+   "n": 1224,
+   "pct": 72.04,
+   "deaths": 465522,
+   "deaths_pct": 85.27,
+   "codes": {
+    "Earthquake": 1219,
+    "Questionable earthquake": 5
+   },
+   "max_ht": 88
+  },
+  "Earthquake and landslide": {
+   "group": "Earthquake and landslide",
+   "n": 115,
+   "pct": 6.77,
+   "deaths": 22447,
+   "deaths_pct": 4.11,
+   "codes": {
+    "Earthquake and landslide": 115
+   },
+   "max_ht": 524.6
+  },
+  "Volcano": {
+   "group": "Volcano",
+   "n": 103,
+   "pct": 6.06,
+   "deaths": 53551,
+   "deaths_pct": 9.81,
+   "codes": {
+    "Volcano": 74,
+    "Volcano and landslide": 19,
+    "Volcano and earthquake": 8,
+    "Volcano, earthquake and landslide": 2
+   },
+   "max_ht": 250
+  },
+  "Landslide": {
+   "group": "Landslide",
+   "n": 131,
+   "pct": 7.71,
+   "deaths": 4311,
+   "deaths_pct": 0.79,
+   "codes": {
+    "Landslide": 131
+   },
+   "max_ht": 481
+  },
+  "Meteorological": {
+   "group": "Meteorological",
+   "n": 76,
+   "pct": 4.47,
+   "deaths": 101,
+   "deaths_pct": 0.02,
+   "codes": {
+    "Meteorological": 76
+   },
+   "max_ht": 7
+  },
+  "Explosion": {
+   "group": "Explosion",
+   "n": 2,
+   "pct": 0.12,
+   "deaths": 0,
+   "deaths_pct": 0.0,
+   "codes": {
+    "Explosion": 2
+   },
+   "max_ht": 7
+  },
+  "Unknown": {
+   "group": "Unknown",
+   "n": 48,
+   "pct": 2.83,
+   "deaths": 7,
+   "deaths_pct": 0.0,
+   "codes": {
+    "Unknown": 48
+   },
+   "max_ht": 30
+  }
+ },
+ "causes_list": [
+  {
+   "group": "Earthquake",
+   "n": 1224,
+   "pct": 72.04,
+   "deaths": 465522,
+   "deaths_pct": 85.27,
+   "codes": {
+    "Earthquake": 1219,
+    "Questionable earthquake": 5
+   },
+   "max_ht": 88
+  },
+  {
+   "group": "Earthquake and landslide",
+   "n": 115,
+   "pct": 6.77,
+   "deaths": 22447,
+   "deaths_pct": 4.11,
+   "codes": {
+    "Earthquake and landslide": 115
+   },
+   "max_ht": 524.6
+  },
+  {
+   "group": "Volcano",
+   "n": 103,
+   "pct": 6.06,
+   "deaths": 53551,
+   "deaths_pct": 9.81,
+   "codes": {
+    "Volcano": 74,
+    "Volcano and landslide": 19,
+    "Volcano and earthquake": 8,
+    "Volcano, earthquake and landslide": 2
+   },
+   "max_ht": 250
+  },
+  {
+   "group": "Landslide",
+   "n": 131,
+   "pct": 7.71,
+   "deaths": 4311,
+   "deaths_pct": 0.79,
+   "codes": {
+    "Landslide": 131
+   },
+   "max_ht": 481
+  },
+  {
+   "group": "Meteorological",
+   "n": 76,
+   "pct": 4.47,
+   "deaths": 101,
+   "deaths_pct": 0.02,
+   "codes": {
+    "Meteorological": 76
+   },
+   "max_ht": 7
+  },
+  {
+   "group": "Explosion",
+   "n": 2,
+   "pct": 0.12,
+   "deaths": 0,
+   "deaths_pct": 0.0,
+   "codes": {
+    "Explosion": 2
+   },
+   "max_ht": 7
+  },
+  {
+   "group": "Unknown",
+   "n": 48,
+   "pct": 2.83,
+   "deaths": 7,
+   "deaths_pct": 0.0,
+   "codes": {
+    "Unknown": 48
+   },
+   "max_ht": 30
+  }
+ ],
+ "cause_codes": {
+  "Unknown": 48,
+  "Earthquake": 1219,
+  "Questionable earthquake": 5,
+  "Earthquake and landslide": 115,
+  "Volcano and earthquake": 8,
+  "Volcano, earthquake and landslide": 2,
+  "Volcano": 74,
+  "Volcano and landslide": 19,
+  "Landslide": 131,
+  "Meteorological": 76,
+  "Explosion": 2
+ },
+ "eq_any_pct": 78.81,
+ "eq_any_n": 1339,
+ "mag": {
+  "n": 1219,
+  "median": 7.1,
+  "ge7_pct": 62.76,
+  "ge8": 158,
+  "ge9": 7,
+  "min": 3.0,
+  "ge9_list": [
+   "1700 Cascadia Subduction Zone",
+   "1730 Central Chile",
+   "1952 Kamchatka",
+   "1960 Southern Chile",
+   "1964 Prince William Sound, AK",
+   "2004 Off W. Coast of Sumatra",
+   "2011 Honshu Island"
+  ]
+ },
+ "plates": {
+  "n": 1310,
+  "within100_pct": 62.6,
+  "within250_pct": 91.68,
+  "median_km": 74
+ },
+ "oceans": {
+  "Pacific": {
+   "ocean": "Pacific",
+   "n": 1142,
+   "pct": 67.22,
+   "deaths": 206842,
+   "deaths_pct": 37.89,
+   "runups": 27004
+  },
+  "Indian Ocean": {
+   "ocean": "Indian Ocean",
+   "n": 98,
+   "pct": 5.77,
+   "deaths": 273519,
+   "deaths_pct": 50.1,
+   "runups": 4009
+  },
+  "Atlantic and Caribbean": {
+   "ocean": "Atlantic and Caribbean",
+   "n": 197,
+   "pct": 11.6,
+   "deaths": 54833,
+   "deaths_pct": 10.04,
+   "runups": 973
+  },
+  "Mediterranean": {
+   "ocean": "Mediterranean",
+   "n": 232,
+   "pct": 13.66,
+   "deaths": 10740,
+   "deaths_pct": 1.97,
+   "runups": 1089
+  },
+  "Black Sea and Caspian": {
+   "ocean": "Black Sea and Caspian",
+   "n": 22,
+   "pct": 1.29,
+   "deaths": 0,
+   "deaths_pct": 0.0,
+   "runups": 59
+  },
+  "Red Sea and Persian Gulf": {
+   "ocean": "Red Sea and Persian Gulf",
+   "n": 6,
+   "pct": 0.35,
+   "deaths": 5,
+   "deaths_pct": 0.0,
+   "runups": 40
+  },
+  "Inland Africa": {
+   "ocean": "Inland Africa",
+   "n": 1,
+   "pct": 0.06,
+   "deaths": 0,
+   "deaths_pct": 0.0,
+   "runups": 1
+  }
+ },
+ "oceans_list": [
+  {
+   "ocean": "Pacific",
+   "n": 1142,
+   "pct": 67.22,
+   "deaths": 206842,
+   "deaths_pct": 37.89,
+   "runups": 27004
+  },
+  {
+   "ocean": "Indian Ocean",
+   "n": 98,
+   "pct": 5.77,
+   "deaths": 273519,
+   "deaths_pct": 50.1,
+   "runups": 4009
+  },
+  {
+   "ocean": "Atlantic and Caribbean",
+   "n": 197,
+   "pct": 11.6,
+   "deaths": 54833,
+   "deaths_pct": 10.04,
+   "runups": 973
+  },
+  {
+   "ocean": "Mediterranean",
+   "n": 232,
+   "pct": 13.66,
+   "deaths": 10740,
+   "deaths_pct": 1.97,
+   "runups": 1089
+  },
+  {
+   "ocean": "Black Sea and Caspian",
+   "n": 22,
+   "pct": 1.29,
+   "deaths": 0,
+   "deaths_pct": 0.0,
+   "runups": 59
+  },
+  {
+   "ocean": "Red Sea and Persian Gulf",
+   "n": 6,
+   "pct": 0.35,
+   "deaths": 5,
+   "deaths_pct": 0.0,
+   "runups": 40
+  },
+  {
+   "ocean": "Inland Africa",
+   "n": 1,
+   "pct": 0.06,
+   "deaths": 0,
+   "deaths_pct": 0.0,
+   "runups": 1
+  }
+ ],
+ "ocean_unknown": 1,
+ "ring": {
+  "n": 1131,
+  "pct": 66.57,
+  "deaths": 206793,
+  "deaths_pct": 37.88,
+  "runups_pct": 80.96,
+  "japan": 304,
+  "japan_pct": 17.89,
+  "sunda": 63,
+  "with_sunda_pct": 70.28
+ },
+ "regions": [
+  {
+   "code": 85,
+   "name": "Japan",
+   "n": 304,
+   "pct": 17.89
+  },
+  {
+   "code": 50,
+   "name": "Mediterranean",
+   "n": 232,
+   "pct": 13.66
+  },
+  {
+   "code": 82,
+   "name": "New Guinea, Solomon Islands, Vanuatu, New Caledonia",
+   "n": 166,
+   "pct": 9.77
+  },
+  {
+   "code": 88,
+   "name": "Pacific coast of North and Central America",
+   "n": 137,
+   "pct": 8.06
+  },
+  {
+   "code": 84,
+   "name": "China, Korea, Philippines, Taiwan",
+   "n": 106,
+   "pct": 6.24
+  },
+  {
+   "code": 81,
+   "name": "New Zealand, eastern Australia and the South Pacific islands",
+   "n": 104,
+   "pct": 6.12
+  },
+  {
+   "code": 89,
+   "name": "Pacific coast of South America",
+   "n": 100,
+   "pct": 5.89
+  },
+  {
+   "code": 60,
+   "name": "Indian Ocean (with Sumatra and Java)",
+   "n": 98,
+   "pct": 5.77
+  },
+  {
+   "code": 86,
+   "name": "Kamchatka and the Kuril Islands",
+   "n": 78,
+   "pct": 4.59
+  },
+  {
+   "code": 83,
+   "name": "Eastern Indonesia",
+   "n": 72,
+   "pct": 4.24
+  },
+  {
+   "code": 73,
+   "name": "Northeast Atlantic",
+   "n": 68,
+   "pct": 4.0
+  },
+  {
+   "code": 74,
+   "name": "Caribbean",
+   "n": 64,
+   "pct": 3.77
+  },
+  {
+   "code": 87,
+   "name": "Alaska and the Aleutians",
+   "n": 64,
+   "pct": 3.77
+  },
+  {
+   "code": 71,
+   "name": "Southwest Atlantic",
+   "n": 24,
+   "pct": 1.41
+  },
+  {
+   "code": 75,
+   "name": "East coast of North America",
+   "n": 22,
+   "pct": 1.29
+  },
+  {
+   "code": 40,
+   "name": "Black Sea and Caspian Sea",
+   "n": 22,
+   "pct": 1.29
+  },
+  {
+   "code": 80,
+   "name": "Hawaii",
+   "n": 11,
+   "pct": 0.65
+  },
+  {
+   "code": 72,
+   "name": "Northwest Atlantic and Greenland",
+   "n": 9,
+   "pct": 0.53
+  },
+  {
+   "code": 30,
+   "name": "Red Sea and Persian Gulf",
+   "n": 6,
+   "pct": 0.35
+  },
+  {
+   "code": 77,
+   "name": "West coast of Africa",
+   "n": 6,
+   "pct": 0.35
+  },
+  {
+   "code": 76,
+   "name": "Gulf of Mexico",
+   "n": 4,
+   "pct": 0.24
+  },
+  {
+   "code": 78,
+   "name": "Central Africa",
+   "n": 1,
+   "pct": 0.06
+  }
+ ],
+ "deadliest": [
+  {
+   "id": 2439,
+   "year": 2004,
+   "yname": "2004",
+   "place": "Off W. Coast of Sumatra",
+   "country": "Indonesia",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 227899,
+   "deaths_total": 227899,
+   "mag": 9.1,
+   "max_ht": 50.9,
+   "ocean": "Indian Ocean"
+  },
+  {
+   "id": 456,
+   "year": 1755,
+   "yname": "1755",
+   "place": "Lisbon",
+   "country": "Portugal",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 50000,
+   "deaths_total": 50000,
+   "mag": 8.5,
+   "max_ht": 18.3,
+   "ocean": "Atlantic and Caribbean"
+  },
+  {
+   "id": 1142,
+   "year": 1883,
+   "yname": "1883",
+   "place": "Krakatau",
+   "country": "Indonesia",
+   "group": "Volcano",
+   "cause": "Volcano",
+   "deaths": 34417,
+   "deaths_total": 36417,
+   "mag": null,
+   "max_ht": 41,
+   "ocean": "Indian Ocean"
+  },
+  {
+   "id": 1234,
+   "year": 1896,
+   "yname": "1896",
+   "place": "Sanriku",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 27122,
+   "deaths_total": 27122,
+   "mag": 8.3,
+   "max_ht": 38.2,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 983,
+   "year": 1868,
+   "yname": "1868",
+   "place": "Northern Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 25000,
+   "deaths_total": 25000,
+   "mag": 8.5,
+   "max_ht": 18,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 5413,
+   "year": 2011,
+   "yname": "2011",
+   "place": "Honshu Island",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 18423,
+   "deaths_total": 18423,
+   "mag": 9.1,
+   "max_ht": 39.26,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 568,
+   "year": 1792,
+   "yname": "1792",
+   "place": "Shimabara Bay, Kyushu Island",
+   "country": "Japan",
+   "group": "Volcano",
+   "cause": "Volcano, earthquake and landslide",
+   "deaths": 15000,
+   "deaths_total": 15000,
+   "mag": 6.4,
+   "max_ht": 55,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 503,
+   "year": 1771,
+   "yname": "1771",
+   "place": "Ryukyu Islands",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 13486,
+   "deaths_total": 13486,
+   "mag": 7.4,
+   "max_ht": 85.4,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 1829,
+   "year": 1952,
+   "yname": "1952",
+   "place": "Kamchatka",
+   "country": "Russia",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 10000,
+   "deaths_total": 10000,
+   "mag": 9,
+   "max_ht": 23,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 2086,
+   "year": 1976,
+   "yname": "1976",
+   "place": "Moro Gulf",
+   "country": "Philippines",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 6800,
+   "deaths_total": 8000,
+   "mag": 8,
+   "max_ht": 9,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 367,
+   "year": 1703,
+   "yname": "1703",
+   "place": "Off SW Boso Peninsula",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 5233,
+   "deaths_total": 5233,
+   "mag": 8.2,
+   "max_ht": 11.7,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 38,
+   "year": 365,
+   "yname": "AD 365",
+   "place": "Crete",
+   "country": "Greece",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 5000,
+   "deaths_total": 5000,
+   "mag": 8,
+   "max_ht": null,
+   "ocean": "Mediterranean"
+  },
+  {
+   "id": 146,
+   "year": 1498,
+   "yname": "1498",
+   "place": "Enshunada Sea",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 5000,
+   "deaths_total": 5000,
+   "mag": 8.3,
+   "max_ht": 10,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 226,
+   "year": 1611,
+   "yname": "1611",
+   "place": "Sanriku",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 5000,
+   "deaths_total": 5000,
+   "mag": 8.1,
+   "max_ht": 25,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 337,
+   "year": 1687,
+   "yname": "1687",
+   "place": "S. Peru",
+   "country": "Peru",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 5000,
+   "deaths_total": 5000,
+   "mag": 8.5,
+   "max_ht": null,
+   "ocean": "Pacific"
+  }
+ ],
+ "deaths": {
+  "total": 545939,
+  "n_events": 244,
+  "n_events_pct": 14.36,
+  "y2004": 227899,
+  "y2004_pct": 41.74,
+  "top10_pct": 78.42,
+  "since1900": 297147,
+  "since2000": 252964,
+  "over1000": 51,
+  "over10000": 9,
+  "only_order": 73,
+  "total_only": 309,
+  "since1900_pct": 54.43,
+  "since2000_pct": 46.34,
+  "sum_total_field": 1896388
+ },
+ "deadliest_total": [
+  {
+   "id": 4622,
+   "year": 2010,
+   "yname": "2010",
+   "place": "Haiti & Dominican Republic",
+   "country": "Haiti",
+   "group": "Earthquake and landslide",
+   "cause": "Earthquake and landslide",
+   "deaths": 7,
+   "deaths_total": 316000,
+   "mag": 7,
+   "max_ht": 3.21,
+   "ocean": "Atlantic and Caribbean"
+  },
+  {
+   "id": 2439,
+   "year": 2004,
+   "yname": "2004",
+   "place": "Off W. Coast of Sumatra",
+   "country": "Indonesia",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 227899,
+   "deaths_total": 227899,
+   "mag": 9.1,
+   "max_ht": 50.9,
+   "ocean": "Indian Ocean"
+  },
+  {
+   "id": 1526,
+   "year": 1923,
+   "yname": "1923",
+   "place": "Sagami Bay",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": 325,
+   "deaths_total": 105385,
+   "mag": 7.9,
+   "max_ht": 13,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 1373,
+   "year": 1908,
+   "yname": "1908",
+   "place": "Messina Strait, Ionian Sea",
+   "country": "Italy",
+   "group": "Earthquake and landslide",
+   "cause": "Earthquake and landslide",
+   "deaths": 2000,
+   "deaths_total": 80000,
+   "mag": 7,
+   "max_ht": 13,
+   "ocean": "Mediterranean"
+  },
+  {
+   "id": 84,
+   "year": 1033,
+   "yname": "1033",
+   "place": "Akko",
+   "country": "Syria",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": null,
+   "deaths_total": 70000,
+   "mag": null,
+   "max_ht": null,
+   "ocean": "Mediterranean"
+  },
+  {
+   "id": 2021,
+   "year": 1970,
+   "yname": "1970",
+   "place": "N. Peru",
+   "country": "Peru",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": null,
+   "deaths_total": 66794,
+   "mag": 7.9,
+   "max_ht": 0.46,
+   "ocean": "Pacific"
+  },
+  {
+   "id": 613,
+   "year": 1815,
+   "yname": "1815",
+   "place": "Tambora",
+   "country": "Indonesia",
+   "group": "Volcano",
+   "cause": "Volcano",
+   "deaths": null,
+   "deaths_total": 60000,
+   "mag": null,
+   "max_ht": 4,
+   "ocean": "Indian Ocean"
+  },
+  {
+   "id": 5844,
+   "year": 1598,
+   "yname": "1598",
+   "place": "South Black Sea",
+   "country": "Turkey",
+   "group": "Earthquake and landslide",
+   "cause": "Earthquake and landslide",
+   "deaths": null,
+   "deaths_total": 60000,
+   "mag": null,
+   "max_ht": null,
+   "ocean": "Black Sea and Caspian"
+  },
+  {
+   "id": 5873,
+   "year": 2023,
+   "yname": "2023",
+   "place": "Gulf of Iskenderun",
+   "country": "Turkey",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": null,
+   "deaths_total": 56697,
+   "mag": 7.8,
+   "max_ht": 0.3,
+   "ocean": "Mediterranean"
+  },
+  {
+   "id": 3139,
+   "year": 1693,
+   "yname": "1693",
+   "place": "Island of Sicily",
+   "country": "Italy",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "deaths": null,
+   "deaths_total": 54000,
+   "mag": 7.4,
+   "max_ht": 12,
+   "ocean": "Mediterranean"
+  }
+ ],
+ "haiti": {
+  "id": 4622,
+  "year": 2010,
+  "yname": "2010",
+  "place": "Haiti & Dominican Republic",
+  "country": "Haiti",
+  "group": "Earthquake and landslide",
+  "cause": "Earthquake and landslide",
+  "deaths": 7,
+  "deaths_total": 316000,
+  "mag": 7,
+  "max_ht": 3.21,
+  "ocean": "Atlantic and Caribbean"
+ },
+ "kanto": {
+  "id": 1526,
+  "year": 1923,
+  "yname": "1923",
+  "place": "Sagami Bay",
+  "country": "Japan",
+  "group": "Earthquake",
+  "cause": "Earthquake",
+  "deaths": 325,
+  "deaths_total": 105385,
+  "mag": 7.9,
+  "max_ht": 13,
+  "ocean": "Pacific"
+ },
+ "highest": [
+  {
+   "id": 1880,
+   "year": 1958,
+   "yname": "1958",
+   "event": "SE. Alaska, AK",
+   "country": "United States",
+   "group": "Earthquake and landslide",
+   "place": "Lituya Bay, AK",
+   "ht": 524.3,
+   "dist": 60.4,
+   "deaths": 5
+  },
+  {
+   "id": 6045,
+   "year": 2025,
+   "yname": "2025",
+   "event": "Tracy Arm, AK",
+   "country": "United States",
+   "group": "Landslide",
+   "place": "Tracy Arm, AK",
+   "ht": 481.0,
+   "dist": 3,
+   "deaths": null
+  },
+  {
+   "id": 3018,
+   "year": 1980,
+   "yname": "1980",
+   "event": "Washington",
+   "country": "United States",
+   "group": "Volcano",
+   "place": "Spirit Lake West, WA",
+   "ht": 250.0,
+   "dist": 8.8,
+   "deaths": null
+  },
+  {
+   "id": 5569,
+   "year": 1963,
+   "yname": "1963",
+   "event": "Vajont Dam, Vajont River",
+   "country": "Italy",
+   "group": "Landslide",
+   "place": "Casso",
+   "ht": 235.0,
+   "dist": 0.6,
+   "deaths": 2000
+  },
+  {
+   "id": 5911,
+   "year": 2023,
+   "yname": "2023",
+   "event": "Dickson Fjord, Greenland",
+   "country": "Greenland",
+   "group": "Landslide",
+   "place": "Dickson Fjord",
+   "ht": 200.0,
+   "dist": 0.1,
+   "deaths": null
+  },
+  {
+   "id": 5596,
+   "year": 2015,
+   "yname": "2015",
+   "event": "Taan Fjord, AK",
+   "country": "United States",
+   "group": "Landslide",
+   "place": "Hoof Hill, Taan Fjord, AK",
+   "ht": 192.9,
+   "dist": 3.2,
+   "deaths": null
+  },
+  {
+   "id": 1694,
+   "year": 1936,
+   "yname": "1936",
+   "event": "Lituya Bay, AK",
+   "country": "United States",
+   "group": "Landslide",
+   "place": "Lituya Bay, AK",
+   "ht": 149.3,
+   "dist": 27.7,
+   "deaths": null
+  },
+  {
+   "id": 805,
+   "year": 1853,
+   "yname": "1853",
+   "event": "Lituya Bay, AK",
+   "country": "United States",
+   "group": "Landslide",
+   "place": "Lituya Bay, AK",
+   "ht": 120.0,
+   "dist": 1.1,
+   "deaths": null
+  },
+  {
+   "id": 315,
+   "year": 1674,
+   "yname": "1674",
+   "event": "Banda Sea",
+   "country": "Indonesia",
+   "group": "Earthquake and landslide",
+   "place": "Hila, Ambon Island",
+   "ht": 100.0,
+   "dist": 41.5,
+   "deaths": 2244
+  },
+  {
+   "id": 5651,
+   "year": 2017,
+   "yname": "2017",
+   "event": "Karrat Fjord, Greenland",
+   "country": "Greenland",
+   "group": "Landslide",
+   "place": "Karrat Fjord",
+   "ht": 90.0,
+   "dist": 2.8,
+   "deaths": 4
+  },
+  {
+   "id": 419,
+   "year": 1741,
+   "yname": "1741",
+   "event": "W. Hokkaido Island",
+   "country": "Japan",
+   "group": "Volcano",
+   "place": "Sado Island",
+   "ht": 90.0,
+   "dist": 395.7,
+   "deaths": 2000
+  },
+  {
+   "id": 5714,
+   "year": 2018,
+   "yname": "2018",
+   "event": "Bureya, Far Eastern Russia",
+   "country": "Russia",
+   "group": "Landslide",
+   "place": "Bureya (81)",
+   "ht": 90.0,
+   "dist": 2.9,
+   "deaths": null
+  },
+  {
+   "id": 551,
+   "year": 1788,
+   "yname": "1788",
+   "event": "Shumagin Islands, AK",
+   "country": "United States",
+   "group": "Earthquake",
+   "place": "Unga Island, AK",
+   "ht": 88.0,
+   "dist": 35.4,
+   "deaths": null
+  },
+  {
+   "id": 503,
+   "year": 1771,
+   "yname": "1771",
+   "event": "Ryukyu Islands",
+   "country": "Japan",
+   "group": "Earthquake",
+   "place": "Miyara, Ishigaki Island",
+   "ht": 85.4,
+   "dist": 39.7,
+   "deaths": 13486
+  },
+  {
+   "id": 5699,
+   "year": 2018,
+   "yname": "2018",
+   "event": "Krakatau",
+   "country": "Indonesia",
+   "group": "Volcano",
+   "place": "Rakata",
+   "ht": 85.3,
+   "dist": 5,
+   "deaths": 437
+  }
+ ],
+ "heights": {
+  "n_ht": 29343,
+  "median": 2.1,
+  "ge10_events": 142,
+  "ge30_events": 47,
+  "ge100_events": 9,
+  "ge100_landslide": 9,
+  "eq_max": {
+   "id": 551,
+   "year": 1788,
+   "yname": "1788",
+   "event": "Shumagin Islands, AK",
+   "country": "United States",
+   "group": "Earthquake",
+   "place": "Unga Island, AK",
+   "ht": 88.0,
+   "dist": 35.4,
+   "deaths": null
+  },
+  "ge10_runups": 3524,
+  "under1_pct": 35.85,
+  "top_landslide_share": 10
+ },
+ "farthest": [
+  {
+   "id": 2439,
+   "year": 2004,
+   "yname": "2004",
+   "event": "Off W. Coast of Sumatra",
+   "country": "Indonesia",
+   "group": "Earthquake",
+   "place": "Baltra Island",
+   "ht": 0.2,
+   "dist": 19265.8,
+   "deaths": 227899,
+   "trav": 29.12,
+   "rcountry": "Ecuador",
+   "trav_h": 29,
+   "trav_m": 7
+  },
+  {
+   "id": 4682,
+   "year": 2010,
+   "yname": "2010",
+   "event": "Central Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Lianyungang",
+   "ht": 0.0,
+   "dist": 18895.1,
+   "deaths": 156,
+   "trav": null,
+   "rcountry": "China"
+  },
+  {
+   "id": 1505,
+   "year": 1922,
+   "yname": "1922",
+   "event": "Northern Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Takao",
+   "ht": 0.0,
+   "dist": 18828.5,
+   "deaths": 200,
+   "trav": 25.8,
+   "rcountry": "Taiwan"
+  },
+  {
+   "id": 2158,
+   "year": 1985,
+   "yname": "1985",
+   "event": "Central Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Hong Kong",
+   "ht": 0.1,
+   "dist": 18671.3,
+   "deaths": null,
+   "trav": null,
+   "rcountry": "China"
+  },
+  {
+   "id": 2249,
+   "year": 1995,
+   "yname": "1995",
+   "event": "Northern Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Hirara",
+   "ht": 0.1,
+   "dist": 18440.1,
+   "deaths": null,
+   "trav": null,
+   "rcountry": "Japan"
+  },
+  {
+   "id": 5590,
+   "year": 2015,
+   "yname": "2015",
+   "event": "Central Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Yonaguni",
+   "ht": 0.0,
+   "dist": 18385.4,
+   "deaths": 8,
+   "trav": null,
+   "rcountry": "Japan"
+  },
+  {
+   "id": 5413,
+   "year": 2011,
+   "yname": "2011",
+   "event": "Honshu Island",
+   "country": "Japan",
+   "group": "Earthquake",
+   "place": "Arraial do Cabo",
+   "ht": 0.1,
+   "dist": 18255.8,
+   "deaths": 18423,
+   "trav": 30.32,
+   "rcountry": "Brazil"
+  },
+  {
+   "id": 1902,
+   "year": 1960,
+   "yname": "1960",
+   "event": "Southern Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Hong Kong",
+   "ht": 0.5,
+   "dist": 18102.3,
+   "deaths": 2226,
+   "trav": 27.15,
+   "rcountry": "China"
+  },
+  {
+   "id": 1752,
+   "year": 1943,
+   "yname": "1943",
+   "event": "Central Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Nagasaki",
+   "ht": 0.1,
+   "dist": 17947.8,
+   "deaths": null,
+   "trav": null,
+   "rcountry": "Japan"
+  },
+  {
+   "id": 983,
+   "year": 1868,
+   "yname": "1868",
+   "event": "Northern Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "place": "Naha, Ryukyu Islands",
+   "ht": 1.0,
+   "dist": 17930.9,
+   "deaths": 25000,
+   "trav": 27.0,
+   "rcountry": "Japan"
+  },
+  {
+   "id": 2373,
+   "year": 2001,
+   "yname": "2001",
+   "event": "S. Peru",
+   "country": "Peru",
+   "group": "Earthquake",
+   "place": "Hirara",
+   "ht": 0.1,
+   "dist": 17842.8,
+   "deaths": 26,
+   "trav": null,
+   "rcountry": "Japan"
+  },
+  {
+   "id": 5802,
+   "year": 2021,
+   "yname": "2021",
+   "event": "Southern Atlantic Ocean",
+   "country": "UK territories",
+   "group": "Earthquake",
+   "place": "Nikolski, AK",
+   "ht": 0.1,
+   "dist": 17672.5,
+   "deaths": null,
+   "trav": null,
+   "rcountry": "United States"
+  }
+ ],
+ "dist": {
+  "over1000_events": 275,
+  "over10000_events": 75,
+  "over1000_pct": 25.94,
+  "events_with": 1060,
+  "runups_over1000_pct": 32.22,
+  "median": 235
+ },
+ "atm": {
+  "n": 727,
+  "tonga": 643,
+  "krakatau": 84,
+  "tonga_far_km": 18280,
+  "tonga_far_place": "Tema",
+  "tonga_far_country": "Ghana",
+  "tonga_countries": 65,
+  "tonga_max_ht": 3.79,
+  "tonga_max_place": "Manresa Beach, CA",
+  "krakatau_far_km": 19340,
+  "krakatau_far_place": "Colon",
+  "krakatau_far_country": "Panama",
+  "krakatau_countries": 18,
+  "krakatau_max_ht": 7.0,
+  "krakatau_max_place": "Saint Paul"
+ },
+ "speed": {
+  "n": 2403,
+  "median_kmh": 680,
+  "q25": 600,
+  "q75": 730,
+  "theory_4km_kmh": 710
+ },
+ "travel": {
+  "chile_japan": {
+   "n": 560,
+   "deaths": 283,
+   "deaths_max": 142,
+   "max_ht": 8.1,
+   "first_h": 22.4,
+   "median_h": 24.9,
+   "dist": 17050,
+   "n_trav": 10
+  },
+  "chile_hilo": {
+   "n": 20,
+   "deaths": 61,
+   "deaths_max": 61,
+   "max_ht": 10.7,
+   "first_h": 14.8,
+   "median_h": 14.8,
+   "dist": 10650,
+   "n_trav": 2
+  },
+  "chile_nz": {
+   "n": 87,
+   "deaths": 0,
+   "deaths_max": 0,
+   "max_ht": 5.5,
+   "first_h": 12.5,
+   "median_h": 13.0,
+   "dist": 8790,
+   "n_trav": 7
+  },
+  "chile_ph": {
+   "n": 6,
+   "deaths": 21,
+   "deaths_max": 21,
+   "max_ht": 1.5,
+   "first_h": 24.1,
+   "median_h": 26.0,
+   "dist": 16550,
+   "n_trav": 3
+  },
+  "aleut_hilo": {
+   "n": 21,
+   "deaths": 96,
+   "deaths_max": 96,
+   "max_ht": 8.8,
+   "first_h": 4.9,
+   "median_h": 4.9,
+   "dist": 3810,
+   "n_trav": 1
+  },
+  "tohoku_chile": {
+   "n": 19,
+   "deaths": 0,
+   "deaths_max": 0,
+   "max_ht": 2.5,
+   "first_h": 21.3,
+   "median_h": 22.2,
+   "dist": 16900,
+   "n_trav": 13
+  },
+  "tohoku_us": {
+   "n": 428,
+   "deaths": 1,
+   "deaths_max": 1,
+   "max_ht": 5.3,
+   "first_h": 4.6,
+   "median_h": 9.8,
+   "dist": 6250,
+   "n_trav": 38
+  },
+  "sum_somalia": {
+   "n": 29,
+   "deaths": 572,
+   "deaths_max": 289,
+   "max_ht": 9.5,
+   "first_h": null,
+   "median_h": null,
+   "dist": 5040,
+   "n_trav": 0
+  },
+  "sum_kenya": {
+   "n": 7,
+   "deaths": 2,
+   "deaths_max": 1,
+   "max_ht": 3.0,
+   "first_h": 8.9,
+   "median_h": 8.9,
+   "dist": 6280,
+   "n_trav": 1
+  },
+  "sum_tanzania": {
+   "n": 21,
+   "deaths": 23,
+   "deaths_max": 13,
+   "max_ht": 3.5,
+   "first_h": 9.7,
+   "median_h": 9.7,
+   "dist": 6390,
+   "n_trav": 1
+  },
+  "sum_safrica": {
+   "n": 11,
+   "deaths": 3,
+   "deaths_max": 2,
+   "max_ht": 1.5,
+   "first_h": 11.1,
+   "median_h": 13.2,
+   "dist": 8840,
+   "n_trav": 8
+  },
+  "sum_srilanka": {
+   "n": 408,
+   "deaths": 35322,
+   "deaths_max": 35322,
+   "max_ht": 12.5,
+   "first_h": 2.8,
+   "median_h": 2.8,
+   "dist": 1740,
+   "n_trav": 1
+  },
+  "sum_india": {
+   "n": 317,
+   "deaths": 26047,
+   "deaths_max": 16269,
+   "max_ht": 17.3,
+   "first_h": 0.2,
+   "median_h": 3.4,
+   "dist": 2110,
+   "n_trav": 9
+  },
+  "sum_thailand": {
+   "n": 114,
+   "deaths": 8212,
+   "deaths_max": 8212,
+   "max_ht": 19.6,
+   "first_h": 1.9,
+   "median_h": 2.8,
+   "dist": 640,
+   "n_trav": 7
+  },
+  "sum_madagascar": {
+   "n": 56,
+   "deaths": 2,
+   "deaths_max": 1,
+   "max_ht": 5.4,
+   "first_h": null,
+   "median_h": null,
+   "dist": 5860,
+   "n_trav": 0
+  }
+ },
+ "countries": [
+  {
+   "country": "Japan",
+   "events": 395,
+   "runups": 12724,
+   "deaths": 130745,
+   "max_ht": 90
+  },
+  {
+   "country": "United States",
+   "events": 264,
+   "runups": 4492,
+   "deaths": 558,
+   "max_ht": 524.3
+  },
+  {
+   "country": "Indonesia",
+   "events": 138,
+   "runups": 2692,
+   "deaths": 223352,
+   "max_ht": 100
+  },
+  {
+   "country": "US territories",
+   "events": 124,
+   "runups": 548,
+   "deaths": 199,
+   "max_ht": 17.6
+  },
+  {
+   "country": "Chile",
+   "events": 102,
+   "runups": 2219,
+   "deaths": 6691,
+   "max_ht": 60
+  },
+  {
+   "country": "Vanuatu",
+   "events": 102,
+   "runups": 193,
+   "deaths": 6,
+   "max_ht": 12
+  },
+  {
+   "country": "Russia",
+   "events": 91,
+   "runups": 1237,
+   "deaths": 4070,
+   "max_ht": 90
+  },
+  {
+   "country": "Mexico",
+   "events": 88,
+   "runups": 358,
+   "deaths": 91,
+   "max_ht": 25
+  },
+  {
+   "country": "Canada",
+   "events": 86,
+   "runups": 519,
+   "deaths": 71,
+   "max_ht": 38
+  },
+  {
+   "country": "New Zealand",
+   "events": 81,
+   "runups": 624,
+   "deaths": 1,
+   "max_ht": 15
+  },
+  {
+   "country": "Australia",
+   "events": 80,
+   "runups": 392,
+   "deaths": 0,
+   "max_ht": 6
+  },
+  {
+   "country": "Greece",
+   "events": 73,
+   "runups": 411,
+   "deaths": 5029,
+   "max_ht": 30
+  },
+  {
+   "country": "Papua New Guinea",
+   "events": 72,
+   "runups": 306,
+   "deaths": 2261,
+   "max_ht": 15
+  },
+  {
+   "country": "Philippines",
+   "events": 63,
+   "runups": 288,
+   "deaths": 4870,
+   "max_ht": 9
+  },
+  {
+   "country": "Peru",
+   "events": 60,
+   "runups": 369,
+   "deaths": 6045,
+   "max_ht": 30
+  },
+  {
+   "country": "Italy",
+   "events": 59,
+   "runups": 268,
+   "deaths": 1850,
+   "max_ht": 235
+  },
+  {
+   "country": "Solomon Islands",
+   "events": 56,
+   "runups": 370,
+   "deaths": 123,
+   "max_ht": 12.1
+  },
+  {
+   "country": "New Caledonia",
+   "events": 55,
+   "runups": 156,
+   "deaths": 25,
+   "max_ht": 3
+  },
+  {
+   "country": "Samoa",
+   "events": 54,
+   "runups": 253,
+   "deaths": 360,
+   "max_ht": 14.4
+  },
+  {
+   "country": "French Polynesia",
+   "events": 50,
+   "runups": 356,
+   "deaths": 3,
+   "max_ht": 20
+  }
+ ],
+ "n_countries": 140,
+ "countries_runups": [
+  {
+   "country": "Japan",
+   "runups": 12724
+  },
+  {
+   "country": "United States",
+   "runups": 4492
+  },
+  {
+   "country": "Indonesia",
+   "runups": 2692
+  },
+  {
+   "country": "Chile",
+   "runups": 2219
+  },
+  {
+   "country": "Russia",
+   "runups": 1237
+  },
+  {
+   "country": "New Zealand",
+   "runups": 624
+  },
+  {
+   "country": "US territories",
+   "runups": 548
+  },
+  {
+   "country": "Canada",
+   "runups": 519
+  },
+  {
+   "country": "Sri Lanka",
+   "runups": 434
+  },
+  {
+   "country": "Greece",
+   "runups": 411
+  }
+ ],
+ "japan": {
+  "tohoku_runups": 6326,
+  "tohoku_pct_all": 19.07,
+  "japan_runups_pct": 38.35
+ },
+ "reach": {
+  "top": [
+   {
+    "id": 5824,
+    "yname": "2022",
+    "event": "Tonga Islands",
+    "countries": 67
+   },
+   {
+    "id": 2439,
+    "yname": "2004",
+    "event": "Off W. Coast of Sumatra",
+    "countries": 48
+   },
+   {
+    "id": 1902,
+    "yname": "1960",
+    "event": "Southern Chile",
+    "countries": 35
+   },
+   {
+    "id": 5413,
+    "yname": "2011",
+    "event": "Honshu Island",
+    "countries": 35
+   },
+   {
+    "id": 5771,
+    "yname": "2021",
+    "event": "S of Raoul Island, Kermadec Islands",
+    "countries": 33
+   },
+   {
+    "id": 6044,
+    "yname": "2025",
+    "event": "Kamchatka Peninsula, Russia",
+    "countries": 31
+   },
+   {
+    "id": 1954,
+    "yname": "1964",
+    "event": "Prince William Sound, AK",
+    "countries": 27
+   },
+   {
+    "id": 4440,
+    "yname": "2009",
+    "event": "Samoa Islands",
+    "countries": 25
+   }
+  ],
+  "ge10": 45
+ },
+ "centuries": [
+  {
+   "c": -1700,
+   "label": "1700s BC",
+   "n": 1,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 1,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -1600,
+   "label": "1600s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -1500,
+   "label": "1500s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -1400,
+   "label": "1400s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -1300,
+   "label": "1300s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -1200,
+   "label": "1200s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -1100,
+   "label": "1100s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -1000,
+   "label": "1000s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -900,
+   "label": "900s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -800,
+   "label": "800s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -700,
+   "label": "700s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -600,
+   "label": "600s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -500,
+   "label": "500s BC",
+   "n": 1,
+   "Earthquake": 1,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -400,
+   "label": "400s BC",
+   "n": 1,
+   "Earthquake": 0,
+   "Earthquake and landslide": 1,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -300,
+   "label": "300s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -200,
+   "label": "200s BC",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": -100,
+   "label": "100s BC",
+   "n": 1,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 1
+  },
+  {
+   "c": 0,
+   "label": "AD 0s",
+   "n": 2,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 2,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 100,
+   "label": "100s",
+   "n": 2,
+   "Earthquake": 2,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 200,
+   "label": "200s",
+   "n": 0,
+   "Earthquake": 0,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 300,
+   "label": "300s",
+   "n": 1,
+   "Earthquake": 1,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 400,
+   "label": "400s",
+   "n": 1,
+   "Earthquake": 1,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 500,
+   "label": "500s",
+   "n": 6,
+   "Earthquake": 5,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 1,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 600,
+   "label": "600s",
+   "n": 1,
+   "Earthquake": 1,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 700,
+   "label": "700s",
+   "n": 7,
+   "Earthquake": 6,
+   "Earthquake and landslide": 0,
+   "Volcano": 1,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 800,
+   "label": "800s",
+   "n": 7,
+   "Earthquake": 4,
+   "Earthquake and landslide": 3,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 900,
+   "label": "900s",
+   "n": 3,
+   "Earthquake": 3,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 1000,
+   "label": "1000s",
+   "n": 9,
+   "Earthquake": 8,
+   "Earthquake and landslide": 0,
+   "Volcano": 1,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 1100,
+   "label": "1100s",
+   "n": 3,
+   "Earthquake": 2,
+   "Earthquake and landslide": 0,
+   "Volcano": 1,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 1200,
+   "label": "1200s",
+   "n": 7,
+   "Earthquake": 6,
+   "Earthquake and landslide": 1,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 1300,
+   "label": "1300s",
+   "n": 8,
+   "Earthquake": 8,
+   "Earthquake and landslide": 0,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 1400,
+   "label": "1400s",
+   "n": 13,
+   "Earthquake": 11,
+   "Earthquake and landslide": 1,
+   "Volcano": 0,
+   "Landslide": 0,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 1
+  },
+  {
+   "c": 1500,
+   "label": "1500s",
+   "n": 20,
+   "Earthquake": 14,
+   "Earthquake and landslide": 5,
+   "Volcano": 0,
+   "Landslide": 1,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 0
+  },
+  {
+   "c": 1600,
+   "label": "1600s",
+   "n": 63,
+   "Earthquake": 46,
+   "Earthquake and landslide": 5,
+   "Volcano": 10,
+   "Landslide": 1,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 1
+  },
+  {
+   "c": 1700,
+   "label": "1700s",
+   "n": 88,
+   "Earthquake": 70,
+   "Earthquake and landslide": 5,
+   "Volcano": 8,
+   "Landslide": 3,
+   "Meteorological": 0,
+   "Explosion": 0,
+   "Unknown": 2
+  },
+  {
+   "c": 1800,
+   "label": "1800s",
+   "n": 282,
+   "Earthquake": 201,
+   "Earthquake and landslide": 27,
+   "Volcano": 11,
+   "Landslide": 13,
+   "Meteorological": 1,
+   "Explosion": 0,
+   "Unknown": 29
+  },
+  {
+   "c": 1900,
+   "label": "1900s",
+   "n": 718,
+   "Earthquake": 525,
+   "Earthquake and landslide": 55,
+   "Volcano": 45,
+   "Landslide": 64,
+   "Meteorological": 18,
+   "Explosion": 2,
+   "Unknown": 9
+  },
+  {
+   "c": 2000,
+   "label": "2000s",
+   "n": 454,
+   "Earthquake": 309,
+   "Earthquake and landslide": 12,
+   "Volcano": 23,
+   "Landslide": 48,
+   "Meteorological": 57,
+   "Explosion": 0,
+   "Unknown": 5
+  }
+ ],
+ "cent": {
+  "c1900": 718,
+  "c1800": 282,
+  "c1700": 88,
+  "c1600": 63,
+  "c1500": 20,
+  "c2000": 454,
+  "before1500": 74,
+  "before0": 4,
+  "since1900": 1172,
+  "since1900_pct": 68.98,
+  "since1800_pct": 85.58,
+  "peak": "1900s"
+ },
+ "decades": [
+  {
+   "d": 1900,
+   "n": 63,
+   "deaths": 5547,
+   "met": 1,
+   "eq": 42
+  },
+  {
+   "d": 1910,
+   "n": 46,
+   "deaths": 265,
+   "met": 2,
+   "eq": 29
+  },
+  {
+   "d": 1920,
+   "n": 54,
+   "deaths": 758,
+   "met": 3,
+   "eq": 41
+  },
+  {
+   "d": 1930,
+   "n": 75,
+   "deaths": 3350,
+   "met": 2,
+   "eq": 58
+  },
+  {
+   "d": 1940,
+   "n": 46,
+   "deaths": 4932,
+   "met": 0,
+   "eq": 30
+  },
+  {
+   "d": 1950,
+   "n": 71,
+   "deaths": 10062,
+   "met": 4,
+   "eq": 44
+  },
+  {
+   "d": 1960,
+   "n": 96,
+   "deaths": 5776,
+   "met": 2,
+   "eq": 75
+  },
+  {
+   "d": 1970,
+   "n": 87,
+   "deaths": 9549,
+   "met": 4,
+   "eq": 66
+  },
+  {
+   "d": 1980,
+   "n": 78,
+   "deaths": 133,
+   "met": 0,
+   "eq": 62
+  },
+  {
+   "d": 1990,
+   "n": 102,
+   "deaths": 3811,
+   "met": 0,
+   "eq": 78
+  },
+  {
+   "d": 2000,
+   "n": 139,
+   "deaths": 229122,
+   "met": 21,
+   "eq": 91
+  },
+  {
+   "d": 2010,
+   "n": 189,
+   "deaths": 23828,
+   "met": 22,
+   "eq": 133
+  },
+  {
+   "d": 2020,
+   "n": 126,
+   "deaths": 14,
+   "met": 14,
+   "eq": 85
+  }
+ ],
+ "modern": {
+  "per_year": 11.5,
+  "n": 875,
+  "deadly_per_year": 1.4,
+  "met_before1950": 9,
+  "met_since2000": 57
+ },
+ "famous": {
+  "thera": {
+   "id": 3,
+   "label": "Thera (Santorini)",
+   "year": -1610,
+   "yname": "1610 BC",
+   "month": null,
+   "day": null,
+   "place": "Thera Island (Santorini)",
+   "country": "Greece",
+   "group": "Volcano",
+   "cause": "Volcano",
+   "validity": 4,
+   "mag": null,
+   "max_ht": 90,
+   "deaths": null,
+   "deaths_total": null,
+   "runups": 2,
+   "countries": 2,
+   "max_run": null,
+   "max_run_place": null,
+   "far_km": null,
+   "far_place": null,
+   "far_country": null,
+   "lat": 36.4,
+   "lon": 25.4,
+   "ocean": "Mediterranean"
+  },
+  "lisbon": {
+   "id": 456,
+   "label": "Lisbon",
+   "year": 1755,
+   "yname": "1755",
+   "month": 11,
+   "day": 1,
+   "place": "Lisbon",
+   "country": "Portugal",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "validity": 4,
+   "mag": 8.5,
+   "max_ht": 18.3,
+   "deaths": 50000,
+   "deaths_total": 50000,
+   "runups": 125,
+   "countries": 24,
+   "max_run": 18.3,
+   "max_run_place": "Cadiz",
+   "far_km": 6050,
+   "far_place": "Samana Bay",
+   "far_country": "Dominican Republic",
+   "lat": 37,
+   "lon": -10,
+   "ocean": "Atlantic and Caribbean"
+  },
+  "cascadia": {
+   "id": 361,
+   "label": "Cascadia",
+   "year": 1700,
+   "yname": "1700",
+   "month": 1,
+   "day": 27,
+   "place": "Cascadia Subduction Zone",
+   "country": "United States",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "validity": 4,
+   "mag": 9,
+   "max_ht": null,
+   "deaths": 2,
+   "deaths_total": null,
+   "runups": 7,
+   "countries": 1,
+   "max_run": 5.4,
+   "max_run_place": "Miho",
+   "far_km": 8120,
+   "far_place": "Tanabe, Kii Peninsula",
+   "far_country": "Japan",
+   "lat": 45,
+   "lon": -125,
+   "ocean": "Pacific"
+  },
+  "krakatau": {
+   "id": 1142,
+   "label": "Krakatau",
+   "year": 1883,
+   "yname": "1883",
+   "month": 8,
+   "day": 27,
+   "place": "Krakatau",
+   "country": "Indonesia",
+   "group": "Volcano",
+   "cause": "Volcano",
+   "validity": 4,
+   "mag": null,
+   "max_ht": 41,
+   "deaths": 34417,
+   "deaths_total": 36417,
+   "runups": 102,
+   "countries": 18,
+   "max_run": 41.0,
+   "max_run_place": "Merak, Java",
+   "far_km": 19340,
+   "far_place": "Colon",
+   "far_country": "Panama",
+   "lat": -6.1,
+   "lon": 105.42,
+   "ocean": "Indian Ocean"
+  },
+  "sanriku": {
+   "id": 1234,
+   "label": "Meiji Sanriku",
+   "year": 1896,
+   "yname": "1896",
+   "month": 6,
+   "day": 15,
+   "place": "Sanriku",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "validity": 4,
+   "mag": 8.3,
+   "max_ht": 38.2,
+   "deaths": 27122,
+   "deaths_total": 27122,
+   "runups": 75,
+   "countries": 6,
+   "max_run": 38.2,
+   "max_run_place": "Shirahama",
+   "far_km": 8910,
+   "far_place": "Rarotonga",
+   "far_country": "Cook Islands",
+   "lat": 39.5,
+   "lon": 144,
+   "ocean": "Pacific"
+  },
+  "aleutian": {
+   "id": 1762,
+   "label": "Aleutian Islands",
+   "year": 1946,
+   "yname": "1946",
+   "month": 4,
+   "day": 1,
+   "place": "Unimak Island, AK",
+   "country": "United States",
+   "group": "Earthquake and landslide",
+   "cause": "Earthquake and landslide",
+   "validity": 4,
+   "mag": 8.6,
+   "max_ht": 42,
+   "deaths": 168,
+   "deaths_total": 168,
+   "runups": 621,
+   "countries": 12,
+   "max_run": 42.2,
+   "max_run_place": "Scotch Cap, Unimak Is, AK",
+   "far_km": 12950,
+   "far_place": "Valparaiso",
+   "far_country": "Chile",
+   "lat": 53.49,
+   "lon": -162.83,
+   "ocean": "Pacific"
+  },
+  "lituya": {
+   "id": 1880,
+   "label": "Lituya Bay",
+   "year": 1958,
+   "yname": "1958",
+   "month": 7,
+   "day": 10,
+   "place": "SE. Alaska, AK",
+   "country": "United States",
+   "group": "Earthquake and landslide",
+   "cause": "Earthquake and landslide",
+   "validity": 4,
+   "mag": 7.8,
+   "max_ht": 524.6,
+   "deaths": 5,
+   "deaths_total": 5,
+   "runups": 17,
+   "countries": 1,
+   "max_run": 524.3,
+   "max_run_place": "Lituya Bay, AK",
+   "far_km": 4540,
+   "far_place": "Hilo, Hawaii, HI",
+   "far_country": "United States",
+   "lat": 58.37,
+   "lon": -136.66,
+   "ocean": "Pacific"
+  },
+  "chile": {
+   "id": 1902,
+   "label": "Chile",
+   "year": 1960,
+   "yname": "1960",
+   "month": 5,
+   "day": 22,
+   "place": "Southern Chile",
+   "country": "Chile",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "validity": 4,
+   "mag": 9.5,
+   "max_ht": 25,
+   "deaths": 2226,
+   "deaths_total": 2226,
+   "runups": 1277,
+   "countries": 35,
+   "max_run": 25.0,
+   "max_run_place": "Isla Mocha",
+   "far_km": 18100,
+   "far_place": "Hong Kong",
+   "far_country": "China",
+   "lat": -38.14,
+   "lon": -73.41,
+   "ocean": "Pacific"
+  },
+  "alaska": {
+   "id": 1954,
+   "label": "Alaska",
+   "year": 1964,
+   "yname": "1964",
+   "month": 3,
+   "day": 28,
+   "place": "Prince William Sound, AK",
+   "country": "United States",
+   "group": "Earthquake and landslide",
+   "cause": "Earthquake and landslide",
+   "validity": 4,
+   "mag": 9.2,
+   "max_ht": 51.8,
+   "deaths": 124,
+   "deaths_total": 139,
+   "runups": 427,
+   "countries": 27,
+   "max_run": 67.1,
+   "max_run_place": "Cliff Mine, Valdez Inlet",
+   "far_km": 15710,
+   "far_place": "Bahia Esperanza, Palmer Peninsula",
+   "far_country": "Antarctica",
+   "lat": 60.91,
+   "lon": -147.34,
+   "ocean": "Pacific"
+  },
+  "sumatra": {
+   "id": 2439,
+   "label": "Indian Ocean",
+   "year": 2004,
+   "yname": "2004",
+   "month": 12,
+   "day": 26,
+   "place": "Off W. Coast of Sumatra",
+   "country": "Indonesia",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "validity": 4,
+   "mag": 9.1,
+   "max_ht": 50.9,
+   "deaths": 227899,
+   "deaths_total": 227899,
+   "runups": 2175,
+   "countries": 48,
+   "max_run": 50.9,
+   "max_run_place": "All of Indonesia",
+   "far_km": 19270,
+   "far_place": "Baltra Island",
+   "far_country": "Ecuador",
+   "lat": 3.29,
+   "lon": 95.98,
+   "ocean": "Indian Ocean"
+  },
+  "tohoku": {
+   "id": 5413,
+   "label": "Tohoku",
+   "year": 2011,
+   "yname": "2011",
+   "month": 3,
+   "day": 11,
+   "place": "Honshu Island",
+   "country": "Japan",
+   "group": "Earthquake",
+   "cause": "Earthquake",
+   "validity": 4,
+   "mag": 9.1,
+   "max_ht": 39.26,
+   "deaths": 18423,
+   "deaths_total": 18423,
+   "runups": 6326,
+   "countries": 35,
+   "max_run": 39.3,
+   "max_run_place": "Iwate Prefecture, Tohoku Region",
+   "far_km": 18260,
+   "far_place": "Arraial do Cabo",
+   "far_country": "Brazil",
+   "lat": 38.3,
+   "lon": 142.37,
+   "ocean": "Pacific"
+  },
+  "tonga": {
+   "id": 5824,
+   "label": "Hunga Tonga",
+   "year": 2022,
+   "yname": "2022",
+   "month": 1,
+   "day": 15,
+   "place": "Tonga Islands",
+   "country": "Tonga",
+   "group": "Volcano",
+   "cause": "Volcano",
+   "validity": 4,
+   "mag": null,
+   "max_ht": 22,
+   "deaths": 6,
+   "deaths_total": 6,
+   "runups": 784,
+   "countries": 67,
+   "max_run": 22.0,
+   "max_run_place": "Tofua SW 2",
+   "far_km": 18280,
+   "far_place": "Tema",
+   "far_country": "Ghana",
+   "lat": -20.54,
+   "lon": -175.38,
+   "ocean": "Pacific"
+  }
+ },
+ "famous_order": [
+  "thera",
+  "lisbon",
+  "cascadia",
+  "krakatau",
+  "sanriku",
+  "aleutian",
+  "lituya",
+  "chile",
+  "alaska",
+  "sumatra",
+  "tohoku",
+  "tonga"
+ ],
+ "cascadia_japan": {
+  "n": 7,
+  "deaths": 2,
+  "deaths_max": 2,
+  "max_ht": 5.4,
+  "first_h": null,
+  "median_h": null,
+  "dist": 7580,
+  "n_trav": 0
+ },
+ "tonga_far": {
+  "countries": 67,
+  "far_km": 18280
+ },
+ "sumatra": {
+  "countries": 48,
+  "runups": 2175,
+  "deaths_indonesia": 167540
+ },
+ "highest_n": 12,
+ "farthest_n": 10,
+ "deadliest_n": 12,
+ "meta": {
+  "page": "https://maps.tristanhotham.com/tsunamis/",
+  "repo": "https://github.com/Tristan-Hotham/tsunamis",
+  "doi": "10.5281/zenodo.23873531",
+  "blog": "https://blog.tristanhotham.com/2026/10/31/tsunamis/",
+  "slug": "tsunamis",
+  "ncei_doi": "10.7289/V5PN93H7",
+  "api": "https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/"
+ },
+ "page": {
+  "events": 1699,
+  "events_located": 1583,
+  "runups": 32628
+ }
+}

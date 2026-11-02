@@ -1,0 +1,8 @@
+group,n,pct,deaths,deaths_pct,max_ht
+Earthquake,1224,72.04,465522,85.27,88.0
+Earthquake and landslide,115,6.77,22447,4.11,524.6
+Volcano,103,6.06,53551,9.81,250.0
+Landslide,131,7.71,4311,0.79,481.0
+Meteorological,76,4.47,101,0.02,7.0
+Explosion,2,0.12,0,0.0,7.0
+Unknown,48,2.83,7,0.0,30.0
