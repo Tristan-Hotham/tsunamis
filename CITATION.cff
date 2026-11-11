@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this data or code, please cite it as below."
+title: "Every Tsunami on Record: Sources, Runups and Deaths in NOAA's Global Historical Tsunami Database"
+type: dataset
+authors:
+  - family-names: Hotham
+    given-names: Tristan
+    orcid: "https://orcid.org/0000-0003-4931-9349"
+    affiliation: "Independent researcher"
+doi: "10.5281/zenodo.23873531"
+url: "https://maps.tristanhotham.com/tsunamis/"
+repository-code: "https://github.com/Tristan-Hotham/tsunamis"
+license: CC-BY-4.0
+keywords:
+  - "tsunamis"
+  - "natural hazards"
+  - "earthquakes"
+  - "landslides"
+  - "volcanoes"
+  - "tsunami runup"
+  - "disaster mortality"
+  - "NOAA NCEI"
+  - "open data"
+  - "maps"
